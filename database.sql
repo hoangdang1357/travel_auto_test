@@ -6,23 +6,29 @@ DROP TABLE IF EXISTS traveler_details;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS travel_services;
 DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS admins;
 
-create databse travel_tour_db;
+-- Create database
+CREATE DATABASE travel_tour_db;
 USE travel_tour_db;
-CREATE table admins(
+
+-- Admins
+CREATE TABLE admins (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     customername VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL
-)
--- 1. customers
+);
+
+-- 1. Customers
 CREATE TABLE customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) ,
-    address TEXT
+    phone VARCHAR(20),
+    address TEXT,
+    CONSTRAINT chk_phone_format CHECK (phone REGEXP '^0[0-9]{9}$')
 );
 
 -- 2. Travel Services
@@ -39,7 +45,7 @@ CREATE TABLE travel_services (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Booked
+-- 3. Bookings
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
@@ -49,8 +55,8 @@ CREATE TABLE bookings (
     num_travelers INT DEFAULT 1,
     status ENUM('pending','confirmed','canceled') DEFAULT 'pending',
     total_amount DECIMAL(10,2),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (service_id) REFERENCES travel_services(service_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE
 );
 
 -- 4. Traveler Details
@@ -72,8 +78,8 @@ CREATE TABLE payments (
     payment_method ENUM('credit_card','e_wallet','gateway'),
     amount DECIMAL(10,2) NOT NULL,
     status ENUM('pending','paid','failed') DEFAULT 'pending',
-    transaction_ref VARCHAR(100),
-    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+    transaction_ref VARCHAR(100) UNIQUE,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
 );
 
 -- 6. Reviews
@@ -81,13 +87,10 @@ CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
     service_id INT NOT NULL,
-    rating INT CHECK(rating BETWEEN 1 AND 5),
+    rating INT,
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (service_id) REFERENCES travel_services(service_id)
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+    FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE,
+    CONSTRAINT chk_review_rating CHECK (rating BETWEEN 1 AND 5)
 );
-
-ALTER TABLE customers
-ADD CONSTRAINT chk_phone_format
-CHECK (phone REGEXP '^0[0-9]{9}$');
