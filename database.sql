@@ -11,7 +11,7 @@ CREATE table admins(
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     customername VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL
 )
 -- 1. customers
 CREATE TABLE customers (
