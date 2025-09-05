@@ -1,5 +1,10 @@
--- Travel Tour Database Schema
--- Drop tables if exist (for reset purpose)
+-- Travel Tour Database Schema (phpMyAdmin-friendly)
+
+-- (Optional) Create & use database
+CREATE DATABASE IF NOT EXISTS travel_tour_db;
+USE travel_tour_db;
+
+-- Drop tables in FK-safe order
 DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS traveler_details;
@@ -8,30 +13,25 @@ DROP TABLE IF EXISTS travel_services;
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS admins;
 
--- Create database
-CREATE DATABASE travel_tour_db;
-USE travel_tour_db;
-
 -- Admins
 CREATE TABLE admins (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     customername VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 1. Customers
+-- Customers (no CHECK here; we’ll use triggers)
 CREATE TABLE customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     phone VARCHAR(20),
-    address TEXT,
-    CONSTRAINT chk_phone_format CHECK (phone REGEXP '^0[0-9]{9}$')
-);
+    address TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 2. Travel Services
+-- Travel Services
 CREATE TABLE travel_services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
     price DECIMAL(10,2) NOT NULL,
@@ -43,9 +43,9 @@ CREATE TABLE travel_services (
     start_date DATE,
     end_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 3. Bookings
+-- Bookings
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
@@ -55,11 +55,13 @@ CREATE TABLE bookings (
     num_travelers INT DEFAULT 1,
     status ENUM('pending','confirmed','canceled') DEFAULT 'pending',
     total_amount DECIMAL(10,2),
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
-    FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE
-);
+    CONSTRAINT fk_bookings_customer
+      FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+    CONSTRAINT fk_bookings_service
+      FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 4. Traveler Details
+-- Traveler Details
 CREATE TABLE traveler_details (
     traveler_id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
@@ -67,10 +69,11 @@ CREATE TABLE traveler_details (
     gender ENUM('male','female','other'),
     dob DATE,
     passport_number VARCHAR(50),
-    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
-);
+    CONSTRAINT fk_travelers_booking
+      FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 5. Payments
+-- Payments
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
@@ -79,10 +82,11 @@ CREATE TABLE payments (
     amount DECIMAL(10,2) NOT NULL,
     status ENUM('pending','paid','failed') DEFAULT 'pending',
     transaction_ref VARCHAR(100) UNIQUE,
-    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
-);
+    CONSTRAINT fk_payments_booking
+      FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 6. Reviews
+-- Reviews (rating validated by triggers)
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
@@ -90,7 +94,53 @@ CREATE TABLE reviews (
     rating INT,
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
-    FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE,
-    CONSTRAINT chk_review_rating CHECK (rating BETWEEN 1 AND 5)
-);
+    CONSTRAINT fk_reviews_customer
+      FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE,
+    CONSTRAINT fk_reviews_service
+      FOREIGN KEY (service_id) REFERENCES travel_services(service_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ===========================
+-- Validation Triggers
+-- ===========================
+DELIMITER $$
+
+-- Customers.phone must be 10 digits starting with 0 (e.g., 0XXXXXXXXX)
+CREATE TRIGGER trg_customers_phone_bi
+BEFORE INSERT ON customers
+FOR EACH ROW
+BEGIN
+  IF NEW.phone IS NOT NULL AND NEW.phone NOT REGEXP '^[0][0-9]{9}$' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid phone: must be 10 digits starting with 0';
+  END IF;
+END$$
+
+CREATE TRIGGER trg_customers_phone_bu
+BEFORE UPDATE ON customers
+FOR EACH ROW
+BEGIN
+  IF NEW.phone IS NOT NULL AND NEW.phone NOT REGEXP '^[0][0-9]{9}$' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid phone: must be 10 digits starting with 0';
+  END IF;
+END$$
+
+-- Reviews.rating must be between 1 and 5
+CREATE TRIGGER trg_reviews_rating_bi
+BEFORE INSERT ON reviews
+FOR EACH ROW
+BEGIN
+  IF NEW.rating IS NULL OR NEW.rating < 1 OR NEW.rating > 5 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid review rating: must be 1..5';
+  END IF;
+END$$
+
+CREATE TRIGGER trg_reviews_rating_bu
+BEFORE UPDATE ON reviews
+FOR EACH ROW
+BEGIN
+  IF NEW.rating IS NULL OR NEW.rating < 1 OR NEW.rating > 5 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid review rating: must be 1..5';
+  END IF;
+END$$
+
+DELIMITER ;
