@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS travel_services;
 DROP TABLE IF EXISTS customers;
 
+create databse travel_tour_db;
+USE travel_tour_db;
 CREATE table admins(
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     customername VARCHAR(50) UNIQUE NOT NULL,
