@@ -5,46 +5,49 @@ DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS traveler_details;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS travel_services;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS customers;
 
--- 1. Users
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE table admins(
+    admin_id INT AUTO_INCREMENT PRIMARY KEY,
+    customername VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+)
+-- 1. customers
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
-    address TEXT,
-    role ENUM('customer','admin') DEFAULT 'customer',
-    preferences TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    phone VARCHAR(20) ,
+    address TEXT
 );
 
 -- 2. Travel Services
 CREATE TABLE travel_services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
+    price DECIMAL(10,2) NOT NULL,
+    rating DECIMAL(2,1),
+    destination VARCHAR(100),
     service_type ENUM('flight','hotel','tour') NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT,
-    destination VARCHAR(100),
     start_date DATE,
     end_date DATE,
-    price DECIMAL(10,2) NOT NULL,
-    rating DECIMAL(2,1),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Bookings
+-- 3. Booked
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+    customer_id INT NOT NULL,
     service_id INT NOT NULL,
     booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     travel_date DATE NOT NULL,
     num_travelers INT DEFAULT 1,
     status ENUM('pending','confirmed','canceled') DEFAULT 'pending',
     total_amount DECIMAL(10,2),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (service_id) REFERENCES travel_services(service_id)
 );
 
@@ -74,11 +77,15 @@ CREATE TABLE payments (
 -- 6. Reviews
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+    customer_id INT NOT NULL,
     service_id INT NOT NULL,
     rating INT CHECK(rating BETWEEN 1 AND 5),
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (service_id) REFERENCES travel_services(service_id)
 );
+
+ALTER TABLE customers
+ADD CONSTRAINT chk_phone_format
+CHECK (phone REGEXP '^0[0-9]{9}$');
