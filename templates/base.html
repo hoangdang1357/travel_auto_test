@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>{% block title %}Travel Booking{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
     <header>
-        <h1>Travel Booking</h1>
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if session.get('user_id') %}
-                <span>Welcome, {{ session['full_name'] }}!</span>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
-            {% endif %}
-        </nav>
-        <hr>
+      <h1>Travel Booking</h1>
+      <nav>
+        {% if session.get('username') == 'admin@123' %}
+        <a href="{{ url_for('home_admin') }}">Home Admin</a>
+        {% else %}
+        <a href="{{ url_for('index') }}">Home</a>
+        {% endif %} {% if session.get('user_id') or session.get('username') ==
+        'admin@123' %} {% if session.get('username') == 'admin@123' %}
+        <span>Welcome, Admin!</span>
+        {% else %}
+        <span>Welcome, {{ session['full_name'] }}!</span>
+        {% endif %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+      </nav>
+      <hr />
     </header>
 
     <main>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class="flashes">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
     </main>
 
     <footer>
-        <hr>
-        <p>&copy; 2025 Travel Booking Website</p>
+      <hr />
+      <p>&copy; 2025 Travel Booking Website</p>
     </footer>
-</body>
+  </body>
 </html>
