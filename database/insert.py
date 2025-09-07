@@ -1,4 +1,6 @@
 import sqlite3
+from werkzeug.security import generate_password_hash
+
 from datetime import date
 
 # Kết nối database
@@ -67,6 +69,29 @@ for service in sample_services:
         service["start_date"],
         service["end_date"]
     ))
+
+# Sample data cho customers
+sample_customers = [
+    ("Nguyen Van A", "a@example.com", "123456"),
+    ("Tran Thi B", "b@example.com", "123456"),
+    ("Le Van C", "c@example.com", "123456"),
+    ("Pham Thi D", "d@example.com", "123456"),
+    ("Hoang Van E", "e@example.com", "123456"),
+    ("Vu Thi F", "f@example.com", "123456"),
+    ("Nguyen Van G", "g@example.com", "123456"),
+    ("Tran Thi H", "h@example.com", "123456"),
+    ("Le Van I", "i@example.com", "123456"),
+    ("Pham Thi K", "k@example.com", "123456")
+]
+
+# Thêm dữ liệu vào bảng customers (tránh trùng email)
+for name, email, password in sample_customers:
+    password_hash = generate_password_hash(password)
+    cursor.execute("""
+        INSERT OR IGNORE INTO customers (full_name, email, password_hash)
+        VALUES (?, ?, ?)
+    """, (name, email, password_hash))
+
 
 # Lưu thay đổi và đóng kết nối
 conn.commit()

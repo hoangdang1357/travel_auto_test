@@ -116,6 +116,54 @@ def edit_travel_service(service_id):
     conn.close()
     return redirect(url_for('manage_travel_services'))
 
+
+@app.route('/add_booking', methods=['POST'])
+def add_booking():
+    customer_id = request.form['customer_id']
+    service_id = request.form['service_id']
+    travel_date = request.form['travel_date']
+    num_travelers = request.form['num_travelers']
+    status = request.form['status']
+    total_amount = request.form['total_amount']
+
+    conn = get_db_connection()
+    conn.execute("""
+        INSERT INTO bookings (customer_id, service_id, travel_date, num_travelers, status, total_amount)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (customer_id, service_id, travel_date, num_travelers, status, total_amount))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('manage_bookings'))
+
+@app.route('/edit_booking/<int:booking_id>', methods=['POST'])
+def edit_booking(booking_id):
+    customer_id = request.form['customer_id']
+    service_id = request.form['service_id']
+    travel_date = request.form['travel_date']
+    num_travelers = request.form['num_travelers']
+    status = request.form['status']
+    total_amount = request.form['total_amount']
+
+    conn = get_db_connection()
+    conn.execute("""
+        UPDATE bookings
+        SET customer_id=?, service_id=?, travel_date=?, num_travelers=?, status=?, total_amount=?
+        WHERE booking_id=?
+    """, (customer_id, service_id, travel_date, num_travelers, status, total_amount, booking_id))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('manage_bookings'))
+
+@app.route('/delete_booking/<int:booking_id>')
+def delete_booking(booking_id):
+    conn = get_db_connection()
+    conn.execute("DELETE FROM bookings WHERE booking_id=?", (booking_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('manage_bookings'))
+
+
+
 # ===========================
 # Auth routes
 # ===========================
@@ -176,9 +224,23 @@ def manage_customers():
 @admin_required
 def manage_bookings():
     conn = get_db_connection()
-    bookings = conn.execute("SELECT * FROM bookings").fetchall()
+    bookings = conn.execute("""
+        SELECT b.booking_id, b.travel_date, b.num_travelers, b.status, b.total_amount,
+               c.customer_id, c.full_name AS customer_name,
+               s.service_id, s.title AS service_title
+        FROM bookings b
+        JOIN customers c ON b.customer_id = c.customer_id
+        JOIN travel_services s ON b.service_id = s.service_id
+        ORDER BY b.booking_id DESC
+    """).fetchall()
+
+    customers = conn.execute("SELECT customer_id, full_name FROM customers").fetchall()
+    services = conn.execute("SELECT service_id, title FROM travel_services").fetchall()
     conn.close()
-    return render_template("bookings/manage_bookings.html", bookings=bookings)
+
+    return render_template("bookings/manage_bookings.html",
+                           bookings=bookings, customers=customers, services=services)
+
 
 
 

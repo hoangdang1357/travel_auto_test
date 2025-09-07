@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Manage Bookings{% endblock %}
+{% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/manage_travel_services.css') }}"
+/>
+
+<div class="container">
+  <h2>Manage Bookings</h2>
+
+  <button id="add-booking-btn">Add New Booking</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Service</th>
+        <th>Travel Date</th>
+        <th>Travelers</th>
+        <th>Status</th>
+        <th>Total Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr id="booking-{{ booking['booking_id'] }}">
+        <td>{{ booking['booking_id'] }}</td>
+        <td data-customer-id="{{ booking['customer_id'] }}">
+          {{ booking['customer_name'] }}
+        </td>
+        <td data-service-id="{{ booking['service_id'] }}">
+          {{ booking['service_title'] }}
+        </td>
+        <td>{{ booking['travel_date'] }}</td>
+        <td>{{ booking['num_travelers'] }}</td>
+        <td>{{ booking['status'] }}</td>
+        <td>{{ booking['total_amount'] }}</td>
+        <td>
+          <button
+            class="action-btn edit-btn"
+            onclick="editBooking('{{ booking['booking_id'] }}')"
+          >
+            Edit
+          </button>
+          <button
+            class="action-btn delete-btn"
+            onclick="deleteBooking('{{ booking['booking_id'] }}')"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8" style="text-align: center">No bookings available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="bookingModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3 id="modalTitle">Add New Booking</h3>
+    <form id="bookingForm" method="POST" action="{{ url_for('add_booking') }}">
+      <input type="hidden" name="booking_id" id="booking_id" />
+
+      <label>Customer</label>
+      <select name="customer_id" id="customer_id" required>
+        <option value="">Select Customer</option>
+        {% for customer in customers %}
+        <option value="{{ customer['customer_id'] }}">
+          {{ customer['full_name'] }}
+        </option>
+        {% endfor %}
+      </select>
+
+      <label>Service</label>
+      <select name="service_id" id="service_id" required>
+        <option value="">Select Service</option>
+        {% for service in services %}
+        <option value="{{ service['service_id'] }}">
+          {{ service['title'] }}
+        </option>
+        {% endfor %}
+      </select>
+
+      <label>Travel Date</label>
+      <input type="date" name="travel_date" id="travel_date" required />
+
+      <label>Number of Travelers</label>
+      <input
+        type="number"
+        name="num_travelers"
+        id="num_travelers"
+        min="1"
+        required
+      />
+
+      <label>Status</label>
+      <select name="status" id="status" required>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="canceled">Canceled</option>
+      </select>
+
+      <label>Total Amount</label>
+      <input
+        type="number"
+        name="total_amount"
+        id="total_amount"
+        step="0.01"
+        required
+      />
+
+      <button type="submit" style="margin-top: 15px">Save</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("bookingModal");
+  const btn = document.getElementById("add-booking-btn");
+  const span = document.getElementsByClassName("close")[0];
+
+  // Open add modal
+  btn.onclick = function () {
+    document.getElementById("modalTitle").innerText = "Add New Booking";
+    document.getElementById("bookingForm").action =
+      "{{ url_for('add_booking') }}";
+    document.getElementById("bookingForm").reset();
+    document.getElementById("booking_id").value = "";
+    modal.style.display = "block";
+  };
+
+  // Close modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  function editBooking(id) {
+    const row = document.getElementById("booking-" + id);
+    if (!row) {
+      console.error("Row not found for booking ID: " + id);
+      return;
+    }
+
+    document.getElementById("modalTitle").innerText = "Edit Booking";
+    document.getElementById("bookingForm").action = "/edit_booking/" + id;
+
+    document.getElementById("booking_id").value = id;
+    document.getElementById("customer_id").value =
+      row.children[1].getAttribute("data-customer-id");
+    document.getElementById("service_id").value =
+      row.children[2].getAttribute("data-service-id");
+    document.getElementById("travel_date").value = row.children[3].innerText;
+    document.getElementById("num_travelers").value = row.children[4].innerText;
+    document.getElementById("status").value = row.children[5].innerText;
+    document.getElementById("total_amount").value =
+      row.children[6].innerText;
+
+    modal.style.display = "block";
+  }
+
+  function deleteBooking(id) {
+    if (confirm("Are you sure you want to delete this booking?")) {
+      window.location.href = `/delete_booking/${id}`;
+    }
+  }
+</script>
+{% endblock %}
