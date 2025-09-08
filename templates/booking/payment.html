@@ -1,0 +1,19 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+    <h2>Complete Your Payment</h2>
+    <p><strong>Total Amount:</strong> ${{ booking['total_amount'] }}</p>
+    <form method="post">
+        <label for="payment_method">Payment Method</label>
+        <select id="payment_method" name="payment_method">
+            <option value="credit_card">Credit Card</option>
+            <option value="e_wallet">E-Wallet</option>
+            <option value="gateway">Payment Gateway</option>
+        </select>
+        <p>(This is a simulated payment. No real transaction will occur.)</p>
+        <button type="submit">Pay Now</button>
+    </form>
+{% endblock %}

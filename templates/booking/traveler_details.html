@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Traveler Details{% endblock %}
+
+{% block content %}
+    <h2>Enter Traveler Details</h2>
+    <p>Please fill out the details for one traveler. (This is a simplified form for one traveler).</p>
+    <form method="post">
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required>
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob">
+        <label for="passport_number">Passport Number</label>
+        <input type="text" id="passport_number" name="passport_number">
+        <button type="submit">Save and Proceed to Payment</button>
+    </form>
+{% endblock %}
