@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin Home - Travel Booking{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_admin.css') }}" />
+
+<div class="admin-container">
+  <button
+    id="btn-travel-services"
+    class="admin-button"
+    onclick="location.href='{{ url_for('manage_travel_services') }}'"
+  >
+    Manage Travel Services
+  </button>
+
+  <button
+    id="btn-bookings"
+    class="admin-button"
+    onclick="location.href='{{ url_for('manage_bookings') }}'"
+  >
+    Manage Bookings
+  </button>
+
+  <button
+    id="btn-users"
+    class="admin-button"
+    onclick="location.href='{{ url_for('manage_customers') }}'"
+  >
+    Manage Customers
+  </button>
+</div>
+{% endblock %}
