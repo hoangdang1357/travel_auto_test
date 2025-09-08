@@ -47,6 +47,11 @@ def index():
     conn.close()
     return render_template("home.html", tours=tours)
 
+
+
+# ===========================
+# travel services routes
+# ===========================
 @app.route('/tour/<int:service_id>')
 def tour_detail(service_id):
     conn = get_db_connection()
@@ -56,9 +61,6 @@ def tour_detail(service_id):
         return "Tour not found", 404
     return render_template("tour_detail.html", tour=tour)
 
-# ===========================
-# travel services routes
-# ===========================
 @app.route('/manage_travel_services')
 @admin_required
 def manage_travel_services():
