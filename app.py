@@ -4,16 +4,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from dotenv import load_dotenv
 from functools import wraps
-
+from flask_sqlalchemy import SQLAlchemy
 load_dotenv()
 # ===========================
 # Cấu hình
 # ===========================
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")  # Đổi thành secret key mạnh
+app.secret_key = os.getenv("SECRET_KEY") or "dev_secret"  # nếu chưa có .env thì dùng mặc định
 
 DB_PATH = "travel_booking.db"
-
+# cấu hình cho SQLAlchemy (chưa dùng ở đây, nhưng để sẵn)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 ADMIN_USERNAME = "admin@123"
 ADMIN_PASSWORD = "123"  # plain text, có thể hash nếu muốn
 
@@ -164,7 +167,53 @@ def delete_booking(booking_id):
     conn.close()
     return redirect(url_for('manage_bookings'))
 
+# ===========================
+# Customers CRUD (sqlite3)
+# ===========================
+@app.route('/manage_customers')
+@admin_required
+def manage_customers():
+    conn = get_db_connection()
+    customers = conn.execute("SELECT * FROM customers").fetchall()
+    conn.close()
+    return render_template("customers/manage_customers.html", customers=customers)
 
+@app.route("/customers/add", methods=["POST"])
+def add_customer():
+    name = request.form["name"]
+    email = request.form["email"]
+    phone = request.form["phone"]
+
+    conn = get_db_connection()
+    conn.execute("INSERT INTO customers (full_name, email, phone) VALUES (?, ?, ?)",
+                 (name, email, phone))
+    conn.commit()
+    conn.close()
+    flash("Customer added successfully!", "success")
+    return redirect(url_for("manage_customers"))
+
+@app.route("/customers/edit/<int:id>", methods=["POST"])
+def edit_customer(id):
+    name = request.form["name"]
+    email = request.form["email"]
+    phone = request.form["phone"]
+
+    conn = get_db_connection()
+    conn.execute("UPDATE customers SET full_name=?, email=?, phone=? WHERE customer_id=?",
+                 (name, email, phone, id))
+    conn.commit()
+    conn.close()
+    flash("Customer updated successfully!", "success")
+    return redirect(url_for("manage_customers"))
+
+@app.route("/customers/delete/<int:id>")
+def delete_customer(id):
+    conn = get_db_connection()
+    conn.execute("DELETE FROM customers WHERE customer_id=?", (id,))
+    conn.commit()
+    conn.close()
+    flash("Customer deleted!", "danger")
+    return redirect(url_for("manage_customers"))
 
 # ===========================
 # Auth routes
@@ -212,14 +261,6 @@ def login():
             return redirect(url_for('login'))
 
     return render_template("login.html")
-
-@app.route('/manage_customers')
-@admin_required
-def manage_customers():
-    conn = get_db_connection()
-    customers = conn.execute("SELECT * FROM customers").fetchall()
-    conn.close()
-    return render_template("customers/manage_customers.html", customers=customers)
 
 
 @app.route('/manage_bookings')
