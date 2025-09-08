@@ -32,7 +32,7 @@ def index():
     services = conn.execute(query, params).fetchall()
     conn.close()
 
-    return render_template('index.html', services=services)
+    return render_template('services/index.html', services=services)
 
 @services_bp.route('/<int:service_id>')
 def details(service_id):

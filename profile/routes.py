@@ -22,7 +22,7 @@ def index():
     conn = get_db_connection()
     customer = conn.execute('SELECT * FROM customers WHERE customer_id = ?', (customer_id,)).fetchone()
     conn.close()
-    return render_template('index.html', customer=customer)
+    return render_template('profile/index.html', customer=customer)
 
 @profile_bp.route('/edit', methods=['GET', 'POST'])
 @login_required
