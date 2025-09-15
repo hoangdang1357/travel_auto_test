@@ -13,6 +13,7 @@
         <input type="number" name="min_rating" placeholder="Min Rating" step="0.1" value="{{ request.args.get('min_rating', '') }}">
         <button type="submit">Search</button>
     </form>
+    <br>
 
     <div class="services-container">
         {% for service in services %}
