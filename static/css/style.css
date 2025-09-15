@@ -20,6 +20,22 @@ main {
     padding: 1rem;
 }
 
+
+/* Tables: borders between cells/rows/columns */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #cccccc;
+    padding: 0.5rem;
+    text-align: left;
+}
+thead th {
+    background: #f7f7f7;
+    color: #333333;
+}
+
 footer {
     background-color: #f2f2f2;
     padding: 1rem;
@@ -58,6 +74,43 @@ form button {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+/* Traveler details grid */
+.traveler-grid {
+    display: grid;
+    /* Default: make cards wider (approx double) by using 2 columns */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.traveler-card {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 1rem;
+    background: #fff;
+}
+
+/* Ensure traveler form fields take full card width */
+.traveler-card label { display: block; margin-top: 0.5rem; }
+.traveler-card input,
+.traveler-card select { width: 100%; box-sizing: border-box; padding: 0.5rem; }
+
+/* Place the main submit button below the grid */
+.traveler-actions { margin-top: 1rem; }
+
+/* Remove global form constraints for the traveler form */
+.traveler-form {
+    display: block; /* override global form flex layout */
+    max-width: none; /* remove 300px cap */
+}
+
+/* Responsive tweaks: 1 column on small screens, 4 columns on very wide screens */
+@media (max-width: 900px) {
+    .traveler-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 1600px) {
+    .traveler-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .services-container {
