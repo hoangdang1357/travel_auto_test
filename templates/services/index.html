@@ -6,13 +6,25 @@
 {% block content %}
     <h2>Our Services</h2>
 
-    <form method="get" action="{{ url_for('services.index') }}">
+    <form method="get" action="{{ url_for('services.index') }}" onsubmit="return validatePriceRange(event)">
         <input type="text" name="destination" placeholder="Destination" value="{{ request.args.get('destination', '') }}">
-        <input type="number" name="min_price" placeholder="Min Price" value="{{ request.args.get('min_price', '') }}">
-        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.args.get('max_price', '') }}">
+        <input type="number" name="min_price" placeholder="Min Price" step="0.01" value="{{ request.args.get('min_price', '') }}">
+        <input type="number" name="max_price" placeholder="Max Price" step="0.01" value="{{ request.args.get('max_price', '') }}">
         <input type="number" name="min_rating" placeholder="Min Rating" step="0.1" value="{{ request.args.get('min_rating', '') }}">
         <button type="submit">Search</button>
     </form>
+    <script>
+    function validatePriceRange(e) {
+        const form = e.target;
+        const minVal = parseFloat(form.min_price.value);
+        const maxVal = parseFloat(form.max_price.value);
+        if (!isNaN(minVal) && !isNaN(maxVal) && maxVal <= minVal) {
+            alert('Max price must be greater than Min price.');
+            return false;
+        }
+        return true;
+    }
+    </script>
     <br>
 
     <div class="services-container">

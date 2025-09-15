@@ -1,5 +1,5 @@
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from database import get_db_connection
 
 services_bp = Blueprint('services', __name__,
@@ -22,8 +22,12 @@ def index():
         query += ' AND price >= ?'
         params.append(min_price)
     if max_price is not None:
-        query += ' AND price <= ?'
-        params.append(max_price)
+        # Validate that max_price > min_price if both provided
+        if min_price is not None and max_price <= min_price:
+            flash('Max price must be greater than Min price.')
+        else:
+            query += ' AND price <= ?'
+            params.append(max_price)
     if min_rating is not None:
         query += ' AND rating >= ?'
         params.append(min_rating)
