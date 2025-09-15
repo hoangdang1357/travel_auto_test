@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Manage Bookings{% endblock %}
+
+{% block content %}
+    <h2>Manage Bookings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking['booking_id'] }}</td>
+                    <td>{{ booking['full_name'] }}</td>
+                    <td>{{ booking['title'] }}</td>
+                    <td>{{ booking['booking_date'] }}</td>
+                    <td>{{ booking['status'] }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.update_booking_status', booking_id=booking['booking_id']) }}" method="post">
+                            <select name="status">
+                                <option value="pending" {% if booking['status'] == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="confirmed" {% if booking['status'] == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                <option value="canceled" {% if booking['status'] == 'canceled' %}selected{% endif %}>Canceled</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
