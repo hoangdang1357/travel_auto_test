@@ -1,0 +1,30 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Travel Services{% endblock %}
+
+{% block content %}
+    <h2>Our Services</h2>
+
+    <form method="get" action="{{ url_for('services.index') }}">
+        <input type="text" name="destination" placeholder="Destination" value="{{ request.args.get('destination', '') }}">
+        <input type="number" name="min_price" placeholder="Min Price" value="{{ request.args.get('min_price', '') }}">
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.args.get('max_price', '') }}">
+        <input type="number" name="min_rating" placeholder="Min Rating" step="0.1" value="{{ request.args.get('min_rating', '') }}">
+        <button type="submit">Search</button>
+    </form>
+    <br>
+
+    <div class="services-container">
+        {% for service in services %}
+            <div class="service-card">
+                <h3>{{ service['title'] }}</h3>
+                <p>{{ service['description'] }}</p>
+                <p><strong>Destination:</strong> {{ service['destination'] }}</p>
+                <p><strong>Price:</strong> ${{ service['price'] }}</p>
+                <p><strong>Rating:</strong> {{ service['rating'] }}/5</p>
+                <a href="{{ url_for('services.details', service_id=service['service_id']) }}">View Details</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
