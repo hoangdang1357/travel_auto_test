@@ -33,6 +33,9 @@ def validate_number_of_travelers(num_text):
     except ValueError:
         return False, "Number of travelers must be a valid integer."
 
+def calculate_total_amount(price: float, num_travelers: int) -> float:
+    return price * num_travelers
+
 @booking_bp.route('/new/<int:service_id>', methods=['GET', 'POST'])
 @login_required
 def new_booking(service_id):
@@ -43,7 +46,7 @@ def new_booking(service_id):
         travel_date = request.form['travel_date']
         num_travelers = int(request.form['num_travelers'])
         customer_id = session['customer_id']
-        total_amount = service['price'] * num_travelers
+        total_amount = calculate_total_amount(service['price'], num_travelers)
 
         is_valid, error_message = validate_travel_date(travel_date)
         if not is_valid:
@@ -54,7 +57,6 @@ def new_booking(service_id):
         if not is_valid:
             flash(error_message)
             return render_template('new.html', service=service)
-
 
         booking = conn.execute("""INSERT INTO bookings (customer_id, service_id, travel_date, num_travelers, total_amount)
                      VALUES (?, ?, ?, ?, ?)""",
