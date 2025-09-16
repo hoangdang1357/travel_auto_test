@@ -29,7 +29,9 @@ CREATE TABLE customers (
     email TEXT UNIQUE NOT NULL,           -- Đã đổi
     password_hash TEXT NOT NULL,          -- Đã đổi
     phone TEXT,                           -- Đã đổi
-    address TEXT
+    address TEXT,
+    verification_code TEXT,
+    verified INTEGER DEFAULT 0
 );
 
 -- Bảng Dịch vụ Du lịch (Travel Services)

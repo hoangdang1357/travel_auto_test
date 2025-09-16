@@ -42,7 +42,7 @@ def signup():
 
     return render_template('signup.html')
 
-@auth_bp.route('/signup/<token>', methods=['GET'])
+@auth_bp.route('/verify/<token>')
 def verify_email(token):
     conn = get_db_connection()
     customer = conn.execute('SELECT * FROM customers WHERE verification_code = ?', (token,)).fetchone()
@@ -65,23 +65,24 @@ def signin():
 
         conn = get_db_connection()
         customer = conn.execute('SELECT * FROM customers WHERE email = ?', (email,)).fetchone()
-        verified = customer['verified'] if customer else 0
         
-        conn.close()
-        
-        if not verified:
-            flash('Please verify your email before signing in.')
-            return redirect(url_for('auth.signin'))
+        if customer:
+            verified = customer['verified']
+            if not verified:
+                flash('Please verify your email before signing in.')
+                return redirect(url_for('auth.signin'))
 
-        if customer and check_password_hash(customer['password_hash'], password):
-            session['customer_id'] = customer['customer_id']
-            session['customer_name'] = customer['full_name']
-            flash('Signed in successfully!')
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid email or password.')
+            if check_password_hash(customer['password_hash'], password):
+                session['customer_id'] = customer['customer_id']
+                session['customer_name'] = customer['full_name']
+                flash('Signed in successfully!')
+                return redirect(url_for('index'))
+        
+        flash('Invalid email or password.')
+        conn.close()
 
     return render_template('signin.html')
+
 
 @auth_bp.route('/logout')
 def logout():

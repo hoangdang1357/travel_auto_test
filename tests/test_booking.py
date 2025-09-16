@@ -60,5 +60,35 @@ class BookingTestCase(unittest.TestCase):
             self.assertIn(b'My Bookings', response.data)
             self.assertIn(b'A trip to Paris', response.data)
 
+    def test_update_booking(self):
+        with self.app as c:
+            # First, create a booking
+            c.post('/booking/new/1', data=dict(
+                travel_date='2025-12-25',
+                num_travelers=1
+            ), follow_redirects=True)
+            # Update traveler details
+            response = c.post('/booking/traveler_details/1', data={
+                'full_name': ['Updated User'],
+                'gender': ['Other'],
+                'dob': ['2000-01-01'],
+                'passport_number': ['Z9876543']
+            }, follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Traveler details saved successfully!', response.data)
+
+    def test_cancel_booking(self):
+        with self.app as c:
+            # First, create a booking
+            c.post('/booking/new/1', data=dict(
+                travel_date='2025-12-25',
+                num_travelers=1
+            ), follow_redirects=True)
+            # Cancel the booking
+            response = c.post('/booking/cancel/1', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Booking cancelled successfully.', response.data)
+
+
 if __name__ == '__main__':
     unittest.main()
