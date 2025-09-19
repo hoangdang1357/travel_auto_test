@@ -1,4 +1,4 @@
-from class_user import User
+from tests.class_test.class_user import User
 import unittest
 import time
 

@@ -31,3 +31,4 @@ def send_verification_email(to_email, token = ""):
         server.login(sender_email, sender_password)
         server.sendmail(from_email, to_email, msg.as_string())
         print(f"Verification email sent to {to_email}")
+        
