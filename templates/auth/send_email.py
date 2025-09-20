@@ -36,7 +36,7 @@ def send_verification_email(to_email, token: str = ""):
     sender_email = _get_env('SMTP_USER', required=True)
     sender_password = _get_env('SMTP_PASS', required=True)
 
-    verification_link_base = f'http://127.0.0.1:5000/auth/signup/{token}'
+    verification_link_base = f'hoang.pythonanywhere.com/auth/signup/{token}'
     from_email = sender_email
 
     # Build message
