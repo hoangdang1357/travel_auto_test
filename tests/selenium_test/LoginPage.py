@@ -17,7 +17,16 @@ class LoginPage:
     def click_login_button(self):
         self.driver.find_element(*self.login_button).click()
         
+    def assert_h1(self, expected_text):
+        h1_text = self.driver.find_element(By.TAG_NAME, "h1").text
+        assert expected_text in h1_text, f"Expected '{expected_text}' in h1, but got '{h1_text}'"
+        
+    def assert_message(self, expected_text):
+        message_element = self.driver.find_element(By.CSS_SELECTOR, 'ul.flashes > li')
+        assert expected_text in message_element.text, f"Expected '{expected_text}' in message, but got '{message_element.text}'"
+
     def login(self, email, password):
         self.enter_email(email)
         self.enter_password(password)
         self.click_login_button()
+    

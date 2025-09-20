@@ -1,0 +1,12 @@
+email,password,assert_type,expected
+hoangdang1368@gmail.com,Hoang123123,h1,Welcome to our Travel Booking Website
+HOANGDANG1368@gmail.com,Hoang123123,h1,Welcome to our Travel Booking Website
+HOANGDANG1368@gmail.com,Hoang123123,h1,Welcome to our Travel Booking Website
+"   hoangdang1368@gmail.com    ",Hoang123123,h1,Welcome to our Travel Booking Website
+hoangdang1368@gmail.com,Hoang123123,h1,Welcome to our Travel Booking Website
+"",Hoang123123,message,log in fail, ask for entering email
+hoangdang1368@gmail.com,"",message,log in fail, ask for entering password
+"","",message,log in fail, ask for entering email
+hoangdang1368@gmail.com,khongphaimatkhau,message,log in fail, wrong password error shows up
+hoangdang@gmail.com,Hoang123123,message,log in fail, email not found error shows up
+hoangdang@gmail.com,Hoang,message,log in fail, email not found error shows up

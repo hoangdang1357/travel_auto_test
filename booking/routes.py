@@ -58,6 +58,7 @@ def new_booking(service_id):
             flash(error_message)
             return render_template('new.html', service=service)
 
+
         booking = conn.execute("""INSERT INTO bookings (customer_id, service_id, travel_date, num_travelers, total_amount)
                      VALUES (?, ?, ?, ?, ?)""",
                      (customer_id, service_id, travel_date, num_travelers, total_amount))

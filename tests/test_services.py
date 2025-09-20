@@ -20,7 +20,8 @@ class ServicesTestCase(unittest.TestCase):
             add_sample_data()
 
     def tearDown(self):
-        os.remove('test.db')
+        if os.path.exists('test.db'):
+            os.remove('test.db')
 
     def test_get_services(self):
         response = self.app.get('/services/', follow_redirects=True)

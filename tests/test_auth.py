@@ -19,7 +19,8 @@ class AuthTestCase(unittest.TestCase):
             init_db()
 
     def tearDown(self):
-        os.remove('test.db')
+        if os.path.exists('test.db'):
+            os.remove('test.db')
 
     def test_signup(self):
         response = self.app.post('/auth/signup', data=dict(

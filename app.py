@@ -1,5 +1,12 @@
 
+import os
+import sys
 from flask import Flask, render_template
+
+# Ensure project root is first on sys.path so local packages (e.g. 'profile')
+# are preferred over similarly-named standard library modules.
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 from auth.routes import auth_bp
 from services.routes import services_bp
 from admin.routes import admin_bp
