@@ -8,6 +8,8 @@ services_bp = Blueprint('services', __name__,
 @services_bp.route('/')
 def index():
     destination = request.args.get('destination')
+    hotel = request.args.get('hotel')
+    flight = request.args.get('flight')
     min_price = request.args.get('min_price', type=float)
     max_price = request.args.get('max_price', type=float)
     min_rating = request.args.get('min_rating', type=float)
@@ -18,6 +20,12 @@ def index():
     if destination:
         query += ' AND destination LIKE ?'
         params.append(f'%{destination}%')
+    if hotel:
+        query += ' AND hotel LIKE ?'
+        params.append(f'%{hotel}%')
+    if flight:
+        query += ' AND flight LIKE ?'
+        params.append(f'%{flight}%')
     if min_price is not None:
         query += ' AND price >= ?'
         params.append(min_price)
