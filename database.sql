@@ -29,7 +29,10 @@ CREATE TABLE customers (
     email TEXT UNIQUE NOT NULL,           -- Đã đổi
     password_hash TEXT NOT NULL,          -- Đã đổi
     phone TEXT,                           -- Đã đổi
-    address TEXT
+    address TEXT,
+    verified INTEGER DEFAULT 0,           -- Thêm từ alter_table.py
+    verification_code TEXT DEFAULT '',    -- Thêm từ alter_table.py
+    code_expiry DATETIME DEFAULT NULL     -- Thêm từ alter_table.py
 );
 
 -- Bảng Dịch vụ Du lịch (Travel Services)

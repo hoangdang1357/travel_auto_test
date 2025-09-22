@@ -7,6 +7,35 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def column_exists(cur: sqlite3.Cursor, table: str, column: str) -> bool:
+    """Check if a column exists in a table"""
+    cur.execute(f"PRAGMA table_info({table})")
+    return any(row[1] == column for row in cur.fetchall())
+
+def add_column_if_missing(cur: sqlite3.Cursor, table: str, column_name: str, column_def: str) -> None:
+    """Add a column to a table if it doesn't already exist"""
+    if column_exists(cur, table, column_name):
+        print(f"Column '{column_name}' already exists on '{table}', skipping")
+        return
+    sql = f"ALTER TABLE {table} ADD COLUMN {column_name} {column_def}"
+    print(f"Applying: {sql}")
+    cur.execute(sql)
+
+def migrate_database():
+    """Apply database migrations for existing databases"""
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("PRAGMA foreign_keys = ON")
+    
+    # Add verification columns to customers table (from alter_table.py)
+    add_column_if_missing(cur, "customers", "verified", "INTEGER DEFAULT 0")
+    add_column_if_missing(cur, "customers", "verification_code", "TEXT DEFAULT ''")
+    add_column_if_missing(cur, "customers", "code_expiry", "DATETIME DEFAULT NULL")
+    
+    conn.commit()
+    conn.close()
+    print("Database migration completed.")
+
 def init_db():
     conn = get_db_connection()
     with open('database.sql', 'r', encoding='utf-8') as f:
@@ -41,4 +70,5 @@ if __name__ == '__main__':
     init_db()
     add_sample_data()
     add_sample_admin()
-    print("Database initialized and sample data added.")
+    migrate_database()  # Apply any pending migrations
+    print("Database initialized, sample data added, and migrations applied.")
