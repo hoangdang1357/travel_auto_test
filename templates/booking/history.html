@@ -1,0 +1,34 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Booking History{% endblock %}
+
+{% block content %}
+    <h2>My Bookings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Service</th>
+                <th>Booking Date</th>
+                <th>Travel Date</th>
+                <th>Travelers</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking['booking_id'] }}</td>
+                    <td>{{ booking['title'] }}</td>
+                    <td>{{ booking['booking_date'] }}</td>
+                    <td>{{ booking['travel_date'] }}</td>
+                    <td>{{ booking['num_travelers'] }}</td>
+                    <td>${{ booking['total_amount'] }}</td>
+                    <td>{{ booking['status'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Travel Booking{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('services.index') }}">Services</a>
+            {% if session['customer_name'] %}
+                <a href="{{ url_for('profile.index') }}">Hi, {{ session['customer_name'] }}</a>
+                <a href="{{ url_for('booking.history') }}">My Bookings</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('auth.signin') }}">Sign In</a>
+                <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+            {% endif %}
+            <a href="{{ url_for('admin.login') }}">Admin</a>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{{ service['title'] }}{% endblock %}
+
+{% block content %}
+    <div class="service-details">
+        <h2>{{ service['title'] }}</h2>
+        <p>{{ service['description'] }}</p>
+        <ul>
+            <li><strong>Destination:</strong> {{ service['destination'] }}</li>
+            <li><strong>Flight:</strong> {{ service['flight'] }}</li>
+            <li><strong>Hotel:</strong> {{ service['hotel'] }}</li>
+            <li><strong>Tour:</strong> {{ service['tour'] }}</li>
+            <li><strong>Price:</strong> ${{ service['price'] }}</li>
+            <li><strong>Rating:</strong> {{ service['rating'] }}/5</li>
+            <li><strong>Available Dates:</strong> {{ service['start_date'] }} to {{ service['end_date'] }}</li>
+            <li><strong>Max Travelers:</strong> {{ service['max_travelers'] }}</li>
+        </ul>
+        <a href="{{ url_for('booking.new_booking', service_id=service['service_id']) }}">Book Now</a>
+    </div>
+{% endblock %}

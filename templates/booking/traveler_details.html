@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Traveler Details{% endblock %}
+
+{% block content %}
+    <h2>Enter Traveler Details</h2>
+    {% set count = num_travelers if num_travelers is defined else 1 %}
+    <p>Please fill out the details for {{ count }} traveler{{ '' if count == 1 else 's' }}.</p>
+    <form method="post" class="traveler-form">
+        <div class="traveler-grid">
+            {% for i in range(count) %}
+            <fieldset class="traveler-card">
+                <legend>Traveler {{ i+1 }}</legend>
+                <label for="full_name_{{ i }}">Full Name</label>
+                <input type="text" id="full_name_{{ i }}" name="full_name[]" required>
+
+                <label for="gender_{{ i }}">Gender</label>
+                <select id="gender_{{ i }}" name="gender[]">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="dob_{{ i }}">Date of Birth</label>
+                <input type="date" id="dob_{{ i }}" name="dob[]">
+
+                <label for="passport_number_{{ i }}">Passport Number</label>
+                <input type="text" id="passport_number_{{ i }}" name="passport_number[]">
+            </fieldset>
+            {% endfor %}
+        </div>
+
+        <div class="traveler-actions">
+            <button type="submit">Save and Proceed to Payment</button>
+        </div>
+    </form>
+{% endblock %}

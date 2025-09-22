@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Add Service{% endblock %}
+
+{% block content %}
+    <h2>Add New Service</h2>
+    <form method="post">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+        <label for="destination">Destination</label>
+        <input type="text" id="destination" name="destination" required>
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+        <label for="rating">Rating</label>
+        <input type="number" id="rating" name="rating" step="0.1" required>
+        <label for="start_date">Start Date</label>
+        <input type="date" id="start_date" name="start_date" required>
+        <label for="end_date">End Date</label>
+        <input type="date" id="end_date" name="end_date" required>
+        <label for="max_travelers">Max Travelers</label>
+        <input type="number" id="max_travelers" name="max_travelers" required>
+        <label for="flight">Flight</label>
+        <input type="text" id="flight" name="flight">
+        <label for="hotel">Hotel</label>
+        <input type="text" id="hotel" name="hotel">
+        <label for="tour">Tour</label>
+        <input type="text" id="tour" name="tour">
+        <button type="submit">Add Service</button>
+    </form>
+{% endblock %}
