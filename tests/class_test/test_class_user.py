@@ -1,6 +1,5 @@
-from class_user import User
+from .class_user import User
 import unittest
-import time
 
 class TestUser(unittest.TestCase):
     def test_user_stub(self):
