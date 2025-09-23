@@ -6,6 +6,8 @@ from database import get_db_connection
 import secrets
 
 from templates.auth.send_email import send_verification_email
+import os
+from flask import jsonify
 
 auth_bp = Blueprint('auth', __name__,
                     template_folder='../templates/auth')
@@ -89,3 +91,28 @@ def logout():
     session.pop('customer_name', None)
     flash('You have been logged out.')
     return redirect(url_for('index'))
+
+
+# Test-only endpoint: retrieve verification token for an email
+# This is intended for automated tests only and requires a secret key set in
+# the server environment variable TEST_ENDPOINT_KEY. It returns JSON {"token": "..."}
+# when the key matches; otherwise it returns 403 or empty.
+@auth_bp.route('/_test/get_verification_token', methods=['POST'])
+def _test_get_verification_token():
+    try:
+        data = request.get_json(force=True)
+        email = data.get('email')
+        key = data.get('key')
+    except Exception:
+        return jsonify({'error': 'invalid request'}), 400
+
+    secret = os.getenv('TEST_ENDPOINT_KEY', '')
+    if not secret or key != secret:
+        return jsonify({'error': 'forbidden'}), 403
+
+    conn = get_db_connection()
+    row = conn.execute('SELECT verification_code FROM customers WHERE email = ? ORDER BY customer_id DESC LIMIT 1', (email,)).fetchone()
+    conn.close()
+    if not row or not row['verification_code']:
+        return jsonify({'token': None}), 200
+    return jsonify({'token': row['verification_code']}), 200
