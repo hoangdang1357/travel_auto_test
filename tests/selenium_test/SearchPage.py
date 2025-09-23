@@ -22,5 +22,22 @@ class SearchPage:
     def click_search(self):
         self.driver.find_element(*self.search_button).click()
         
+    def assert_service_present(self, expected_text):
+        services = self.driver.find_elements(*self.services_card)
+        print(f"Found {len(services)} services on the page.")
+        if expected_text.lower() in ["no trip is found", "all trips"]:
+            if expected_text == "No trip is found":
+                assert len(services) == 0, f"Expected no services, but found {len(services)}"
+                return True
+            elif expected_text == "All trips":
+                assert len(services) > 0, "Expected some services, but found none"
+                return True
+            else:
+                raise AssertionError(f"Unexpected expected_text value: {expected_text}")
+        for service in services:
+            if expected_text in service.text:
+                return True
+        raise AssertionError(f"Service with text '{expected_text}' not found on the page")
+        
     
         

@@ -3,332 +3,11 @@
   <head>
     <meta charset="utf-8"/>
     <title id="head-title">report.html</title>
-      <style type="text/css">body {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  /* do not increase min-width as some may use split screens */
-  min-width: 800px;
-  color: #999;
-}
-
-h1 {
-  font-size: 24px;
-  color: black;
-}
-
-h2 {
-  font-size: 16px;
-  color: black;
-}
-
-p {
-  color: black;
-}
-
-a {
-  color: #999;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-/******************************
- * SUMMARY INFORMATION
- ******************************/
-#environment td {
-  padding: 5px;
-  border: 1px solid #e6e6e6;
-  vertical-align: top;
-}
-#environment tr:nth-child(odd) {
-  background-color: #f6f6f6;
-}
-#environment ul {
-  margin: 0;
-  padding: 0 20px;
-}
-
-/******************************
- * TEST RESULT COLORS
- ******************************/
-span.passed,
-.passed .col-result {
-  color: green;
-}
-
-span.skipped,
-span.xfailed,
-span.rerun,
-.skipped .col-result,
-.xfailed .col-result,
-.rerun .col-result {
-  color: orange;
-}
-
-span.error,
-span.failed,
-span.xpassed,
-.error .col-result,
-.failed .col-result,
-.xpassed .col-result {
-  color: red;
-}
-
-.col-links__extra {
-  margin-right: 3px;
-}
-
-/******************************
- * RESULTS TABLE
- *
- * 1. Table Layout
- * 2. Extra
- * 3. Sorting items
- *
- ******************************/
-/*------------------
- * 1. Table Layout
- *------------------*/
-#results-table {
-  border: 1px solid #e6e6e6;
-  color: #999;
-  font-size: 12px;
-  width: 100%;
-}
-#results-table th,
-#results-table td {
-  padding: 5px;
-  border: 1px solid #e6e6e6;
-  text-align: left;
-}
-#results-table th {
-  font-weight: bold;
-}
-
-/*------------------
- * 2. Extra
- *------------------*/
-.logwrapper {
-  max-height: 230px;
-  overflow-y: scroll;
-  background-color: #e6e6e6;
-}
-.logwrapper.expanded {
-  max-height: none;
-}
-.logwrapper.expanded .logexpander:after {
-  content: "collapse [-]";
-}
-.logwrapper .logexpander {
-  z-index: 1;
-  position: sticky;
-  top: 10px;
-  width: max-content;
-  border: 1px solid;
-  border-radius: 3px;
-  padding: 5px 7px;
-  margin: 10px 0 10px calc(100% - 80px);
-  cursor: pointer;
-  background-color: #e6e6e6;
-}
-.logwrapper .logexpander:after {
-  content: "expand [+]";
-}
-.logwrapper .logexpander:hover {
-  color: #000;
-  border-color: #000;
-}
-.logwrapper .log {
-  min-height: 40px;
-  position: relative;
-  top: -50px;
-  height: calc(100% + 50px);
-  border: 1px solid #e6e6e6;
-  color: black;
-  display: block;
-  font-family: "Courier New", Courier, monospace;
-  padding: 5px;
-  padding-right: 80px;
-  white-space: pre-wrap;
-}
-
-div.media {
-  border: 1px solid #e6e6e6;
-  float: right;
-  height: 240px;
-  margin: 0 5px;
-  overflow: hidden;
-  width: 320px;
-}
-
-.media-container {
-  display: grid;
-  grid-template-columns: 25px auto 25px;
-  align-items: center;
-  flex: 1 1;
-  overflow: hidden;
-  height: 200px;
-}
-
-.media-container--fullscreen {
-  grid-template-columns: 0px auto 0px;
-}
-
-.media-container__nav--right,
-.media-container__nav--left {
-  text-align: center;
-  cursor: pointer;
-}
-
-.media-container__viewport {
-  cursor: pointer;
-  text-align: center;
-  height: inherit;
-}
-.media-container__viewport img,
-.media-container__viewport video {
-  object-fit: cover;
-  width: 100%;
-  max-height: 100%;
-}
-
-.media__name,
-.media__counter {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex: 0 0 25px;
-  align-items: center;
-}
-
-.collapsible td:not(.col-links) {
-  cursor: pointer;
-}
-.collapsible td:not(.col-links):hover::after {
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-}
-
-.col-result {
-  width: 130px;
-}
-.col-result:hover::after {
-  content: " (hide details)";
-}
-
-.col-result.collapsed:hover::after {
-  content: " (show details)";
-}
-
-#environment-header h2:hover::after {
-  content: " (hide details)";
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-#environment-header.collapsed h2:hover::after {
-  content: " (show details)";
-  color: #bbb;
-  font-style: italic;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-/*------------------
- * 3. Sorting items
- *------------------*/
-.sortable {
-  cursor: pointer;
-}
-.sortable.desc:after {
-  content: " ";
-  position: relative;
-  left: 5px;
-  bottom: -12.5px;
-  border: 10px solid #4caf50;
-  border-bottom: 0;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-.sortable.asc:after {
-  content: " ";
-  position: relative;
-  left: 5px;
-  bottom: 12.5px;
-  border: 10px solid #4caf50;
-  border-top: 0;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-.hidden, .summary__reload__button.hidden {
-  display: none;
-}
-
-.summary__data {
-  flex: 0 0 550px;
-}
-.summary__reload {
-  flex: 1 1;
-  display: flex;
-  justify-content: center;
-}
-.summary__reload__button {
-  flex: 0 0 300px;
-  display: flex;
-  color: white;
-  font-weight: bold;
-  background-color: #4caf50;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.summary__reload__button:hover {
-  background-color: #46a049;
-}
-.summary__spacer {
-  flex: 0 0 550px;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-}
-
-.filters,
-.collapse {
-  display: flex;
-  align-items: center;
-}
-.filters button,
-.collapse button {
-  color: #999;
-  border: none;
-  background: none;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.filters button:hover,
-.collapse button:hover {
-  color: #ccc;
-}
-
-.filter__label {
-  margin-right: 10px;
-}
-
-      </style>
-    
+      <link href="assets\style.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <h1 id="title">report.html</h1>
-    <p>Report generated on 20-Sep-2025 at 09:34:00 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+    <p>Report generated on 23-Sep-2025 at 15:32:33 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
         v4.1.1</p>
     <div id="environment-header">
       <h2>Environment</h2>
@@ -382,7 +61,7 @@ div.media {
         <h2>Summary</h2>
         <div class="additional-summary prefix">
         </div>
-        <p class="run-count">11 tests took 00:01:48.</p>
+        <p class="run-count">0 test took 0 ms.</p>
         <p class="filter">(Un)check the boxes to filter the results.</p>
         <div class="summary__reload">
           <div class="summary__reload__button hidden" onclick="location.reload()">
@@ -392,18 +71,18 @@ div.media {
         <div class="summary__spacer"></div>
         <div class="controls">
           <div class="filters">
-            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" />
-            <span class="failed">8 Failed,</span>
-            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" />
-            <span class="passed">3 Passed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" disabled/>
+            <span class="failed">0 Failed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" disabled/>
+            <span class="passed">0 Passed,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="skipped" disabled/>
             <span class="skipped">0 Skipped,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xfailed" disabled/>
             <span class="xfailed">0 Expected failures,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xpassed" disabled/>
             <span class="xpassed">0 Unexpected passes,</span>
-            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="error" disabled/>
-            <span class="error">0 Errors,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="error" />
+            <span class="error">1 Errors,</span>
             <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="rerun" disabled/>
             <span class="rerun">0 Reruns</span>
           </div>
@@ -429,7 +108,7 @@ div.media {
     </table>
   </body>
   <footer>
-    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.13.3&#34;, &#34;Platform&#34;: &#34;Windows-11-10.0.26100-SP0&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;8.4.2&#34;, &#34;pluggy&#34;: &#34;1.6.0&#34;}, &#34;Plugins&#34;: {&#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.1.1&#34;}, &#34;JAVA_HOME&#34;: &#34;C:\\Program Files\\Java\\jdk-11\\&#34;}, &#34;tests&#34;: {&#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&#34;, &#34;duration&#34;: &#34;00:00:15&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website0]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:15&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;HOANGDANG1368@gmail.com&amp;#x27;, password = &amp;#x27;Hoang123123&amp;#x27;, assert_type = &amp;#x27;h1&amp;#x27;, expected = &amp;#x27;Welcome to our Travel Booking Website&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n&amp;gt;               login_page.assert_h1(expected)\n\ntests\\selenium_test\\test_login.py:37: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests\\selenium_test\\LoginPage.py:21: in assert_h1\n    h1_text = self.driver.find_element(By.TAG_NAME, &amp;quot;h1&amp;quot;).text\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:926: in find_element\n    return self.execute(Command.FIND_ELEMENT, {&amp;quot;using&amp;quot;: by, &amp;quot;value&amp;quot;: value})[&amp;quot;value&amp;quot;]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:458: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x0000015D3B8C4F50&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 404, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;no such element&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;no such element: Unable to locate element: {\\...ff715f62618+11176]\\\\n\\\\tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\\\\n\\\\tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                try:\n                    value = json.loads(value_json)\n                    if isinstance(value, dict):\n                        if len(value) == 1:\n                            value = value[&amp;quot;value&amp;quot;]\n                        status = value.get(&amp;quot;error&amp;quot;, None)\n                        if not status:\n                            status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                            message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                            if not isinstance(message, str):\n                                value = message\n                                message = message.get(&amp;quot;message&amp;quot;)\n                        else:\n                            message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&amp;quot;method&amp;quot;:&amp;quot;tag name&amp;quot;,&amp;quot;selector&amp;quot;:&amp;quot;h1&amp;quot;}\nE         (Session info: chrome=140.0.7339.128); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nE       Stacktrace:\nE       \tGetHandleVerifier [0x0x7ff715f730f5+79493]\nE       \tGetHandleVerifier [0x0x7ff715f73150+79584]\nE       \t(No symbol) [0x0x7ff715cf01ba]\nE       \t(No symbol) [0x0x7ff715d48067]\nE       \t(No symbol) [0x0x7ff715d4832c]\nE       \t(No symbol) [0x0x7ff715d9be27]\nE       \t(No symbol) [0x0x7ff715d7074f]\nE       \t(No symbol) [0x0x7ff715d98b8b]\nE       \t(No symbol) [0x0x7ff715d704e3]\nE       \t(No symbol) [0x0x7ff715d38e92]\nE       \t(No symbol) [0x0x7ff715d39c63]\nE       \tGetHandleVerifier [0x0x7ff716230dbd+2954061]\nE       \tGetHandleVerifier [0x0x7ff71622b02a+2930106]\nE       \tGetHandleVerifier [0x0x7ff71624b357+3061991]\nE       \tGetHandleVerifier [0x0x7ff715f8d60e+187294]\nE       \tGetHandleVerifier [0x0x7ff715f9557f+219919]\nE       \tGetHandleVerifier [0x0x7ff715f7c294+116772]\nE       \tGetHandleVerifier [0x0x7ff715f7c449+117209]\nE       \tGetHandleVerifier [0x0x7ff715f62618+11176]\nE       \tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\nE       \tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\n\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\errorhandler.py:232: NoSuchElementException\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&#34;, &#34;duration&#34;: &#34;00:00:15&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[HOANGDANG1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:15&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;HOANGDANG1368@gmail.com&amp;#x27;, password = &amp;#x27;Hoang123123&amp;#x27;, assert_type = &amp;#x27;h1&amp;#x27;, expected = &amp;#x27;Welcome to our Travel Booking Website&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n&amp;gt;               login_page.assert_h1(expected)\n\ntests\\selenium_test\\test_login.py:37: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests\\selenium_test\\LoginPage.py:21: in assert_h1\n    h1_text = self.driver.find_element(By.TAG_NAME, &amp;quot;h1&amp;quot;).text\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:926: in find_element\n    return self.execute(Command.FIND_ELEMENT, {&amp;quot;using&amp;quot;: by, &amp;quot;value&amp;quot;: value})[&amp;quot;value&amp;quot;]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:458: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x0000015D3B8C6350&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 404, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;no such element&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;no such element: Unable to locate element: {\\...ff715f62618+11176]\\\\n\\\\tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\\\\n\\\\tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                try:\n                    value = json.loads(value_json)\n                    if isinstance(value, dict):\n                        if len(value) == 1:\n                            value = value[&amp;quot;value&amp;quot;]\n                        status = value.get(&amp;quot;error&amp;quot;, None)\n                        if not status:\n                            status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                            message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                            if not isinstance(message, str):\n                                value = message\n                                message = message.get(&amp;quot;message&amp;quot;)\n                        else:\n                            message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&amp;quot;method&amp;quot;:&amp;quot;tag name&amp;quot;,&amp;quot;selector&amp;quot;:&amp;quot;h1&amp;quot;}\nE         (Session info: chrome=140.0.7339.128); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nE       Stacktrace:\nE       \tGetHandleVerifier [0x0x7ff715f730f5+79493]\nE       \tGetHandleVerifier [0x0x7ff715f73150+79584]\nE       \t(No symbol) [0x0x7ff715cf01ba]\nE       \t(No symbol) [0x0x7ff715d48067]\nE       \t(No symbol) [0x0x7ff715d4832c]\nE       \t(No symbol) [0x0x7ff715d9be27]\nE       \t(No symbol) [0x0x7ff715d7074f]\nE       \t(No symbol) [0x0x7ff715d98b8b]\nE       \t(No symbol) [0x0x7ff715d704e3]\nE       \t(No symbol) [0x0x7ff715d38e92]\nE       \t(No symbol) [0x0x7ff715d39c63]\nE       \tGetHandleVerifier [0x0x7ff716230dbd+2954061]\nE       \tGetHandleVerifier [0x0x7ff71622b02a+2930106]\nE       \tGetHandleVerifier [0x0x7ff71624b357+3061991]\nE       \tGetHandleVerifier [0x0x7ff715f8d60e+187294]\nE       \tGetHandleVerifier [0x0x7ff715f9557f+219919]\nE       \tGetHandleVerifier [0x0x7ff715f7c294+116772]\nE       \tGetHandleVerifier [0x0x7ff715f7c449+117209]\nE       \tGetHandleVerifier [0x0x7ff715f62618+11176]\nE       \tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\nE       \tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\n\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\errorhandler.py:232: NoSuchElementException\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[   hoangdang1368@gmail.com    -Hoang123123-h1-Welcome to our Travel Booking Website]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[   hoangdang1368@gmail.com    -Hoang123123-h1-Welcome to our Travel Booking Website]&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[   hoangdang1368@gmail.com    -Hoang123123-h1-Welcome to our Travel Booking Website]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-Hoang123123-h1-Welcome to our Travel Booking Website1]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;No log output captured.&#34;}], &#34;tests/selenium_test/test_login.py::test_login[-Hoang123123-message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[-Hoang123123-message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:15&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[-Hoang123123-message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:15&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;&amp;#x27;, password = &amp;#x27;Hoang123123&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests\\selenium_test\\LoginPage.py:25: in assert_message\n    message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:926: in find_element\n    return self.execute(Command.FIND_ELEMENT, {&amp;quot;using&amp;quot;: by, &amp;quot;value&amp;quot;: value})[&amp;quot;value&amp;quot;]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:458: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x0000015D3B8C2330&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 404, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;no such element&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;no such element: Unable to locate element: {\\...ff715f62618+11176]\\\\n\\\\tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\\\\n\\\\tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                try:\n                    value = json.loads(value_json)\n                    if isinstance(value, dict):\n                        if len(value) == 1:\n                            value = value[&amp;quot;value&amp;quot;]\n                        status = value.get(&amp;quot;error&amp;quot;, None)\n                        if not status:\n                            status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                            message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                            if not isinstance(message, str):\n                                value = message\n                                message = message.get(&amp;quot;message&amp;quot;)\n                        else:\n                            message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&amp;quot;method&amp;quot;:&amp;quot;css selector&amp;quot;,&amp;quot;selector&amp;quot;:&amp;quot;ul.flashes &amp;gt; li&amp;quot;}\nE         (Session info: chrome=140.0.7339.128); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nE       Stacktrace:\nE       \tGetHandleVerifier [0x0x7ff715f730f5+79493]\nE       \tGetHandleVerifier [0x0x7ff715f73150+79584]\nE       \t(No symbol) [0x0x7ff715cf01ba]\nE       \t(No symbol) [0x0x7ff715d48067]\nE       \t(No symbol) [0x0x7ff715d4832c]\nE       \t(No symbol) [0x0x7ff715d9be27]\nE       \t(No symbol) [0x0x7ff715d7074f]\nE       \t(No symbol) [0x0x7ff715d98b8b]\nE       \t(No symbol) [0x0x7ff715d704e3]\nE       \t(No symbol) [0x0x7ff715d38e92]\nE       \t(No symbol) [0x0x7ff715d39c63]\nE       \tGetHandleVerifier [0x0x7ff716230dbd+2954061]\nE       \tGetHandleVerifier [0x0x7ff71622b02a+2930106]\nE       \tGetHandleVerifier [0x0x7ff71624b357+3061991]\nE       \tGetHandleVerifier [0x0x7ff715f8d60e+187294]\nE       \tGetHandleVerifier [0x0x7ff715f9557f+219919]\nE       \tGetHandleVerifier [0x0x7ff715f7c294+116772]\nE       \tGetHandleVerifier [0x0x7ff715f7c449+117209]\nE       \tGetHandleVerifier [0x0x7ff715f62618+11176]\nE       \tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\nE       \tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\n\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\errorhandler.py:232: NoSuchElementException\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com--message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com--message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:15&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com--message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:15&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;hoangdang1368@gmail.com&amp;#x27;, password = &amp;#x27;&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests\\selenium_test\\LoginPage.py:25: in assert_message\n    message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:926: in find_element\n    return self.execute(Command.FIND_ELEMENT, {&amp;quot;using&amp;quot;: by, &amp;quot;value&amp;quot;: value})[&amp;quot;value&amp;quot;]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:458: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x0000015D3B87F570&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 404, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;no such element&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;no such element: Unable to locate element: {\\...ff715f62618+11176]\\\\n\\\\tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\\\\n\\\\tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                try:\n                    value = json.loads(value_json)\n                    if isinstance(value, dict):\n                        if len(value) == 1:\n                            value = value[&amp;quot;value&amp;quot;]\n                        status = value.get(&amp;quot;error&amp;quot;, None)\n                        if not status:\n                            status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                            message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                            if not isinstance(message, str):\n                                value = message\n                                message = message.get(&amp;quot;message&amp;quot;)\n                        else:\n                            message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&amp;quot;method&amp;quot;:&amp;quot;css selector&amp;quot;,&amp;quot;selector&amp;quot;:&amp;quot;ul.flashes &amp;gt; li&amp;quot;}\nE         (Session info: chrome=140.0.7339.128); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nE       Stacktrace:\nE       \tGetHandleVerifier [0x0x7ff715f730f5+79493]\nE       \tGetHandleVerifier [0x0x7ff715f73150+79584]\nE       \t(No symbol) [0x0x7ff715cf01ba]\nE       \t(No symbol) [0x0x7ff715d48067]\nE       \t(No symbol) [0x0x7ff715d4832c]\nE       \t(No symbol) [0x0x7ff715d9be27]\nE       \t(No symbol) [0x0x7ff715d7074f]\nE       \t(No symbol) [0x0x7ff715d98b8b]\nE       \t(No symbol) [0x0x7ff715d704e3]\nE       \t(No symbol) [0x0x7ff715d38e92]\nE       \t(No symbol) [0x0x7ff715d39c63]\nE       \tGetHandleVerifier [0x0x7ff716230dbd+2954061]\nE       \tGetHandleVerifier [0x0x7ff71622b02a+2930106]\nE       \tGetHandleVerifier [0x0x7ff71624b357+3061991]\nE       \tGetHandleVerifier [0x0x7ff715f8d60e+187294]\nE       \tGetHandleVerifier [0x0x7ff715f9557f+219919]\nE       \tGetHandleVerifier [0x0x7ff715f7c294+116772]\nE       \tGetHandleVerifier [0x0x7ff715f7c449+117209]\nE       \tGetHandleVerifier [0x0x7ff715f62618+11176]\nE       \tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\nE       \tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\n\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\errorhandler.py:232: NoSuchElementException\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[--message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[--message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:14&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[--message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:14&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;&amp;#x27;, password = &amp;#x27;&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests\\selenium_test\\LoginPage.py:25: in assert_message\n    message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:926: in find_element\n    return self.execute(Command.FIND_ELEMENT, {&amp;quot;using&amp;quot;: by, &amp;quot;value&amp;quot;: value})[&amp;quot;value&amp;quot;]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py:458: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x0000015D3BD985A0&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 404, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;no such element&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;no such element: Unable to locate element: {\\...ff715f62618+11176]\\\\n\\\\tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\\\\n\\\\tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                try:\n                    value = json.loads(value_json)\n                    if isinstance(value, dict):\n                        if len(value) == 1:\n                            value = value[&amp;quot;value&amp;quot;]\n                        status = value.get(&amp;quot;error&amp;quot;, None)\n                        if not status:\n                            status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                            message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                            if not isinstance(message, str):\n                                value = message\n                                message = message.get(&amp;quot;message&amp;quot;)\n                        else:\n                            message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&amp;quot;method&amp;quot;:&amp;quot;css selector&amp;quot;,&amp;quot;selector&amp;quot;:&amp;quot;ul.flashes &amp;gt; li&amp;quot;}\nE         (Session info: chrome=140.0.7339.128); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nE       Stacktrace:\nE       \tGetHandleVerifier [0x0x7ff715f730f5+79493]\nE       \tGetHandleVerifier [0x0x7ff715f73150+79584]\nE       \t(No symbol) [0x0x7ff715cf01ba]\nE       \t(No symbol) [0x0x7ff715d48067]\nE       \t(No symbol) [0x0x7ff715d4832c]\nE       \t(No symbol) [0x0x7ff715d9be27]\nE       \t(No symbol) [0x0x7ff715d7074f]\nE       \t(No symbol) [0x0x7ff715d98b8b]\nE       \t(No symbol) [0x0x7ff715d704e3]\nE       \t(No symbol) [0x0x7ff715d38e92]\nE       \t(No symbol) [0x0x7ff715d39c63]\nE       \tGetHandleVerifier [0x0x7ff716230dbd+2954061]\nE       \tGetHandleVerifier [0x0x7ff71622b02a+2930106]\nE       \tGetHandleVerifier [0x0x7ff71624b357+3061991]\nE       \tGetHandleVerifier [0x0x7ff715f8d60e+187294]\nE       \tGetHandleVerifier [0x0x7ff715f9557f+219919]\nE       \tGetHandleVerifier [0x0x7ff715f7c294+116772]\nE       \tGetHandleVerifier [0x0x7ff715f7c449+117209]\nE       \tGetHandleVerifier [0x0x7ff715f62618+11176]\nE       \tBaseThreadInitThunk [0x0x7ffb1243e8d7+23]\nE       \tRtlUserThreadStart [0x0x7ffb133c8d9c+44]\n\n.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\errorhandler.py:232: NoSuchElementException\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-khongphaimatkhau-message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-khongphaimatkhau-message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:06&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang1368@gmail.com-khongphaimatkhau-message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:06&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;hoangdang1368@gmail.com&amp;#x27;, password = &amp;#x27;khongphaimatkhau&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;LoginPage.LoginPage object at 0x0000015D3B8AD150&amp;gt;, expected_text = &amp;#x27;log in fail&amp;#x27;\n\n    def assert_message(self, expected_text):\n        message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n&amp;gt;       assert expected_text in message_element.text, f&amp;quot;Expected &amp;#x27;{expected_text}&amp;#x27; in message, but got &amp;#x27;{message_element.text}&amp;#x27;&amp;quot;\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: Expected &amp;#x27;log in fail&amp;#x27; in message, but got &amp;#x27;Invalid email or password.&amp;#x27;\n\ntests\\selenium_test\\LoginPage.py:26: AssertionError\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang123123-message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang123123-message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang123123-message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;hoangdang@gmail.com&amp;#x27;, password = &amp;#x27;Hoang123123&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;LoginPage.LoginPage object at 0x0000015D3B8AD050&amp;gt;, expected_text = &amp;#x27;log in fail&amp;#x27;\n\n    def assert_message(self, expected_text):\n        message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n&amp;gt;       assert expected_text in message_element.text, f&amp;quot;Expected &amp;#x27;{expected_text}&amp;#x27; in message, but got &amp;#x27;{message_element.text}&amp;#x27;&amp;quot;\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: Expected &amp;#x27;log in fail&amp;#x27; in message, but got &amp;#x27;Please verify your email before signing in.&amp;#x27;\n\ntests\\selenium_test\\LoginPage.py:26: AssertionError\n&#34;}], &#34;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang-message-log in fail]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang-message-log in fail]&#34;, &#34;duration&#34;: &#34;00:00:05&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/selenium_test/test_login.py::test_login[hoangdang@gmail.com-Hoang-message-log in fail]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:05&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;email = &amp;#x27;hoangdang@gmail.com&amp;#x27;, password = &amp;#x27;Hoang&amp;#x27;, assert_type = &amp;#x27;message&amp;#x27;, expected = &amp;#x27;log in fail&amp;#x27;\n\n    @pytest.mark.parametrize(&amp;quot;email,password,assert_type,expected&amp;quot;, test_data)\n    def test_login(email, password, assert_type, expected):\n        driver = webdriver.Chrome()\n        try:\n            driver.get(&amp;quot;https://hoang.pythonanywhere.com/auth/signin&amp;quot;)\n            login_page = LoginPage(driver=driver)\n    \n            # perform login\n            login_page.login(email=email, password=password)\n            driver.implicitly_wait(10)\n    \n            # flexible assertion depending on type\n            if assert_type == &amp;quot;h1&amp;quot;:\n                login_page.assert_h1(expected)\n            elif assert_type == &amp;quot;message&amp;quot;:\n&amp;gt;               login_page.assert_message(expected)\n\ntests\\selenium_test\\test_login.py:39: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;LoginPage.LoginPage object at 0x0000015D3BD2D220&amp;gt;, expected_text = &amp;#x27;log in fail&amp;#x27;\n\n    def assert_message(self, expected_text):\n        message_element = self.driver.find_element(By.CSS_SELECTOR, &amp;#x27;ul.flashes &amp;gt; li&amp;#x27;)\n&amp;gt;       assert expected_text in message_element.text, f&amp;quot;Expected &amp;#x27;{expected_text}&amp;#x27; in message, but got &amp;#x27;{message_element.text}&amp;#x27;&amp;quot;\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: Expected &amp;#x27;log in fail&amp;#x27; in message, but got &amp;#x27;Please verify your email before signing in.&amp;#x27;\n\ntests\\selenium_test\\LoginPage.py:26: AssertionError\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report.html&#34;}"></div>
+    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.13.3&#34;, &#34;Platform&#34;: &#34;Windows-11-10.0.26100-SP0&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;8.4.2&#34;, &#34;pluggy&#34;: &#34;1.6.0&#34;}, &#34;Plugins&#34;: {&#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.1.1&#34;}, &#34;JAVA_HOME&#34;: &#34;C:\\Program Files\\Java\\jdk-11\\&#34;}, &#34;tests&#34;: {&#34;tests/class_test/test_class_user.py&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;tests/class_test/test_class_user.py::collect&#34;, &#34;duration&#34;: &#34;0 ms&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;tests/class_test/test_class_user.py::collect&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;0 ms&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;ImportError while importing test module &amp;#x27;C:\\Users\\Admin\\Desktop\\travel_auto_test\\tests\\class_test\\test_class_user.py&amp;#x27;.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\class_test\\test_class_user.py:1: in &amp;lt;module&amp;gt;\n    from tests.class_test.class_user import User\nE   ModuleNotFoundError: No module named &amp;#x27;tests&amp;#x27;\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report.html&#34;}"></div>
     <script>
       (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const { getCollapsedCategory, setCollapsedIds } = require('./storage.js')

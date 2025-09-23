@@ -1,0 +1,16 @@
+hotel,flight,expected
+New york,,New York
+,A380,New York
+NEW YORK,,New York
+,a380,New York
+New york,Flight A380,New York
+Paris,Flight B787,No trip is found
+,A3,New York
+New,,New York
+"    New york    ",,New York
+,    A380   ,New York
+NeW yOrk,,New York
+Newyork,,New York
+,,All trips
+hanoi,,No trip is found
+,MH370,No trip is found

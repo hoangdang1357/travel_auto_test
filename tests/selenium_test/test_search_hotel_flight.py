@@ -25,17 +25,16 @@ test_data = load_test_data_from_csv(CSV_PATH)
 def test_search_hotel_flight(hotel, flight, expected):
     driver = webdriver.Chrome()
     try:
-        driver.get("https://hoang.pythonanywhere.com/services/search")
+        driver.get("https://hoang.pythonanywhere.com/services/")
         search_page = SearchPage(driver=driver)
+        driver.implicitly_wait(10)
 
         # perform search
         search_page.enter_hotel(hotel_name=hotel)
         search_page.enter_flight(flight_name=flight)
         search_page.click_search()
         driver.implicitly_wait(10)
-
+        search_page.assert_service_present(expected_text=expected)
         # assert results
-        body_text = driver.find_element("tag name", "body").text
-        assert expected in body_text, f"Expected '{expected}' to be in page body"
     finally:
         driver.quit()
