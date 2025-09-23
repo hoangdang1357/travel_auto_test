@@ -33,7 +33,7 @@ class FlowBooking:
         self.gmail_page = GmailPage(driver)
         self.new_booking_page = NewBookingPage(driver)
 
-    def test_flow_booking(self, email, password, destination, fullname, phone, address):
+    def test_flow_booking(self, email, password, destination, fullname, gender, phone, address, passport="A1234567", dob="1990-01-01"):
         self.register_page.navigate_to_register_page()
         self.register_page.register(fullname, email, password, phone, address)
         # Instead of opening real Gmail, look up the verification token in the test DB
@@ -56,6 +56,9 @@ class FlowBooking:
         self.new_booking_page.enter_travel_date("2024-12-25")
         self.new_booking_page.enter_num_travelers("1")
         self.new_booking_page.click_confirm_button()
+        self.travelers_detail_page.enter_traveler_details(0, fullname, gender, dob, passport)
+        self.travelers_detail_page.click_book_now()
+        
         
 
 
