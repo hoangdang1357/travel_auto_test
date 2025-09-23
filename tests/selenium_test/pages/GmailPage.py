@@ -23,3 +23,8 @@ class GmailPage:
         WebDriverWait(self.driver, 20).until(
             EC.element_to_be_clickable(self.verify_link)
         ).click()
+        
+    def open_verification_link(self):
+        self.open_gmail()
+        self.click_email_item()
+        self.click_verify_link()
