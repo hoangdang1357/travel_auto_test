@@ -20,7 +20,7 @@ class NewBookingPage:
         num_travelers_element = self.wait.until(EC.element_to_be_clickable(self.num_travelers))
         num_travelers_element.clear()
         num_travelers_element.send_keys(num)
-
+    # to commit the adding explicit wait for NewBookingPage and GmailPage
     def get_booking_header(self):
         header_element = self.wait.until(EC.presence_of_element_located(self.booking_header))
         return header_element.text
