@@ -2,8 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from pages.LoginPage import LoginPage
 from pages.SearchPage import SearchPage
-from pages.ServiceDetail import ServiceDetail
-from pages.TravelersDetail import ServiceDetail as TravelersDetail
+from tests.selenium_test.pages.ServiceDetailPage import ServiceDetail
+from tests.selenium_test.pages.TravelersDetailPage import ServiceDetail as TravelersDetail
 from pages.RegisterPage import RegisterPage
 import os
 

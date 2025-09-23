@@ -1,28 +1,42 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class SearchPage:
     def __init__(self, driver):
         self.driver = driver
+        self.wait = WebDriverWait(driver, 10)  # 10 second timeout
         self.hotel_field = (By.NAME, "hotel")
         self.flight_field = (By.NAME, "flight")
         self.search_button = (By.CSS_SELECTOR, 'button[type="submit"]')
         self.services_card = (By.CLASS_NAME, "service-card")
 
     def enter_hotel(self, hotel_name):
-        hotel_input = self.driver.find_element(*self.hotel_field)
+        hotel_input = self.wait.until(EC.element_to_be_clickable(self.hotel_field))
         hotel_input.clear()
         hotel_input.send_keys(hotel_name)
 
     def enter_flight(self, flight_name):
-        flight_input = self.driver.find_element(*self.flight_field)
+        flight_input = self.wait.until(EC.element_to_be_clickable(self.flight_field))
         flight_input.clear()
         flight_input.send_keys(flight_name)
 
     def click_search(self):
-        self.driver.find_element(*self.search_button).click()
+        search_button_element = self.wait.until(EC.element_to_be_clickable(self.search_button))
+        search_button_element.click()
         
     def assert_service_present(self, expected_text):
+        # Wait for the page to load after search by waiting for services container or no results
+        try:
+            # Wait for either services to be present or page to fully load
+            self.wait.until(lambda driver: 
+                len(driver.find_elements(*self.services_card)) >= 0 or
+                "No services found" in driver.page_source
+            )
+        except:
+            pass  # Continue with assertion logic even if wait times out
+            
         services = self.driver.find_elements(*self.services_card)
         print(f"Found {len(services)} services on the page.")
         if expected_text.lower() in ["no trip is found", "all trips"]:
