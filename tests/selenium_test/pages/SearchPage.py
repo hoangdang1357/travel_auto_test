@@ -9,8 +9,23 @@ class SearchPage:
         self.wait = WebDriverWait(driver, 10)  # 10 second timeout
         self.hotel_field = (By.NAME, "hotel")
         self.flight_field = (By.NAME, "flight")
+        self.destination_field = (By.NAME, "destination")
         self.search_button = (By.CSS_SELECTOR, 'button[type="submit"]')
         self.services_card = (By.CLASS_NAME, "service-card")
+        self.view_details_button = (By.LINK_TEXT, "View Details")
+        
+    def enter_destination(self, destination):
+        destination_input = self.wait.until(EC.element_to_be_clickable(self.destination_field))
+        destination_input.clear()
+        destination_input.send_keys(destination)
+        
+    def click_view_details(self):
+        self.wait.until(EC.element_to_be_clickable(self.view_details_button)).click()
+        
+    def navigate_to_search_page(self):
+        self.driver.get("https://hoang.pythonanywhere.com/services")
+        # Wait for the page to load by waiting for a key element
+        self.wait.until(EC.presence_of_element_located(self.hotel_field))
 
     def enter_hotel(self, hotel_name):
         hotel_input = self.wait.until(EC.element_to_be_clickable(self.hotel_field))

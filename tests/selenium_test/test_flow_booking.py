@@ -4,6 +4,7 @@ from pages.LoginPage import LoginPage
 from pages.SearchPage import SearchPage
 from pages.ServiceDetailPage import ServiceDetail
 from pages.TravelersDetailPage import ServiceDetail as TravelersDetail
+from pages.NewBookingPage import NewBookingPage
 from pages.RegisterPage import RegisterPage
 from pages.GmailPage import GmailPage
 from helpers.verification_helper import get_verification_url_for_email
@@ -30,8 +31,9 @@ class FlowBooking:
         self.travelers_detail_page = TravelersDetail(driver)
         self.register_page = RegisterPage(driver)
         self.gmail_page = GmailPage(driver)
+        self.new_booking_page = NewBookingPage(driver)
 
-    def test_flow_booking(self, email, password, service_name, fullname, phone, address):
+    def test_flow_booking(self, email, password, destination, fullname, phone, address):
         self.register_page.navigate_to_register_page()
         self.register_page.register(fullname, email, password, phone, address)
         # Instead of opening real Gmail, look up the verification token in the test DB
@@ -46,7 +48,15 @@ class FlowBooking:
             # fallback to the Gmail flow (legacy) if DB lookup failed
             self.gmail_page.open_verification_link()
         self.login_page.login(email, password)
-        self.login_page.assert_h1("Welcome to our Travel Booking Website")
+        self.search_page.navigate_to_search_page()
+        self.search_page.enter_destination(destination)
+        self.search_page.click_search_button()
+        self.search_page.click_view_details()
+        self.service_detail_page.click_book_now()
+        self.new_booking_page.enter_travel_date("2024-12-25")
+        self.new_booking_page.enter_num_travelers("1")
+        self.new_booking_page.click_confirm_button()
+        
 
 
 @pytest.fixture
@@ -76,7 +86,7 @@ def test_e2e_flow_booking(chrome_driver):
     flow.test_flow_booking(
         email="dangbaohoang1368@gmail.com",
         password="TestPass123",
-        service_name="Paris",
+        destination="Tokyo",
         fullname="Test User",
         phone="0123456789",
         address="Hanoi"
