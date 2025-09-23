@@ -1,7 +1,7 @@
 import csv
 import pytest
 from selenium import webdriver
-from LoginPage import LoginPage
+from tests.selenium_test.pages.LoginPage import LoginPage
 import os
 # helper to load test data from CSV
 def load_test_data_from_csv(filepath):

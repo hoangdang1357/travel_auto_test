@@ -1,7 +1,7 @@
 import csv
 import pytest
 from selenium import webdriver
-from SearchPage import SearchPage
+from tests.selenium_test.pages.SearchPage import SearchPage
 import os
 
 # helper to load test data from CSV
