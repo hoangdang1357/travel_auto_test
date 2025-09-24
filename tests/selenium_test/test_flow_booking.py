@@ -17,7 +17,6 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import tempfile
 import shutil
-import time
 
 options = webdriver.ChromeOptions()
 # keep the options minimal here; the fixture will create a temp profile
