@@ -17,6 +17,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import tempfile
 import shutil
+import time
 
 options = webdriver.ChromeOptions()
 # keep the options minimal here; the fixture will create a temp profile
@@ -37,7 +38,7 @@ class FlowBooking:
         self.booking_history_page = BookingHistoryPage(driver)
         self.payment_page = PaymentPage(driver)
 
-    def test_flow_booking(self, email, password, destination, fullname, gender, phone, address, passport="A1234567", dob="1990-01-01"):
+    def test_flow_booking(self, email, password, destination, fullname, gender, phone, address, passport="A1234567", dob="01-01-1990"):
         self.register_page.navigate_to_register_page()
         self.register_page.register(fullname, email, password, phone, address)
         # Instead of opening real Gmail, look up the verification token in the test DB
@@ -57,7 +58,7 @@ class FlowBooking:
         self.search_page.click_search()
         self.search_page.click_view_details()
         self.service_detail_page.click_book_now()
-        self.new_booking_page.enter_travel_date("2025-12-25")
+        self.new_booking_page.enter_travel_date("01-01-2026")
         self.new_booking_page.enter_num_travelers("1")
         self.new_booking_page.click_confirm_button()
         self.travelers_detail_page.enter_traveler_details(0, fullname, gender, dob, passport)
@@ -90,10 +91,12 @@ def test_e2e_flow_booking(chrome_driver):
     flow = FlowBooking(chrome_driver)
     # Example parameters - replace with real test values or parametrize
     flow.test_flow_booking(
-        email="hdjhdbs3udg@eaut.edu.vn",
+        email="hdjh6dds2ds332bs354udg@eaut.edu.vn",
         password="TestPass123",
         gender="male",
         destination="Tokyo",
+        passport="A1234567",
+        dob="01-01-1990",
         fullname="Test User",
         phone="0123456789",
         address="Hanoi"

@@ -8,10 +8,10 @@ class ServiceDetail:
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)  # 10 second timeout
         self.heading = (By.TAG_NAME, "h2")
-        self.book_button = (By.LINK_TEXT, 'Save and Proceed to Payment')
+        self.submitButton = (By.CSS_SELECTOR, 'button[type="submit"]')
         
     def get_fullname_field(self, index):
-        locator = (By.NAME, f"fullname_{index}")
+        locator = (By.ID, f"full_name_{index}")
         return self.wait.until(EC.element_to_be_clickable(locator))
 
     def enter_fullname(self, fullname, index):
@@ -43,7 +43,7 @@ class ServiceDetail:
                         break
     
     def get_dob_field(self, index):
-        locator = (By.NAME, f"dob_{index}")
+        locator = (By.ID, f"dob_{index}")
         return self.wait.until(EC.element_to_be_clickable(locator))
     
     def enter_dob(self, dob, index):
@@ -52,7 +52,7 @@ class ServiceDetail:
         dob_element.send_keys(dob)
 
     def get_passport_field(self, index):
-        locator = (By.NAME, f"passport_number_{index}")
+        locator = (By.ID, f"passport_number_{index}")
         return self.wait.until(EC.element_to_be_clickable(locator))
     
     def enter_passport(self, passport, index):
@@ -67,5 +67,5 @@ class ServiceDetail:
         self.enter_passport(passport, index)
 
     def click_book_now(self):
-        book_button_element = self.wait.until(EC.element_to_be_clickable(self.book_button))
+        book_button_element = self.wait.until(EC.element_to_be_clickable(self.submitButton))
         book_button_element.click()
