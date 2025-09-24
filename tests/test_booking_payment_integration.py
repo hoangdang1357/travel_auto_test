@@ -6,6 +6,12 @@ import datetime
 import pytest
 from flask import session
 
+# There are 3 test cases in test_booking_payment_integration.py:
+
+# test_booking_to_payment_flow
+# test_booking_validation_errors
+# test_booking_invalid_date_format
+
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)

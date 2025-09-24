@@ -54,8 +54,9 @@ def validate_number_of_travelers(num_text):
     except ValueError:
         return False, "Number of travelers must be a valid integer."
 
-def calculate_total_amount(price: float, num_travelers: int) -> float:
-    return price * num_travelers
+def calculate_total_amount(price: float, num_travelers: int, tax: float = 0.0, discount: float = 0.0) -> float:
+    subtotal = price * num_travelers
+    return subtotal + tax - discount
 
 @booking_bp.route('/new/<int:service_id>', methods=['GET', 'POST'])
 @login_required

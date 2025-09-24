@@ -4,6 +4,13 @@ import tempfile
 import sqlite3
 import pytest
 
+# There are 2 test cases in test_admin_updates_booking_status.py:
+
+# test_admin_can_update_booking_status — logs in as admin and updates a booking to canceled; asserts DB status changes.
+# test_admin_confirms_booking_reflected_in_history — updates a booking to confirmed 
+# and verifies the customer’s /booking/history shows 
+# “confirmed”.
+
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
