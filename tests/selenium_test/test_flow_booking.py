@@ -7,6 +7,8 @@ from pages.TravelersDetailPage import ServiceDetail as TravelersDetail
 from pages.NewBookingPage import NewBookingPage
 from pages.RegisterPage import RegisterPage
 from pages.GmailPage import GmailPage
+from pages.BookingHistoryPage import BookingHistoryPage
+from pages.PaymentPage import PaymentPage
 from helpers.verification_helper import get_verification_url_for_email
 import os
 import pytest
@@ -32,6 +34,8 @@ class FlowBooking:
         self.register_page = RegisterPage(driver)
         self.gmail_page = GmailPage(driver)
         self.new_booking_page = NewBookingPage(driver)
+        self.booking_history_page = BookingHistoryPage(driver)
+        self.payment_page = PaymentPage(driver)
 
     def test_flow_booking(self, email, password, destination, fullname, gender, phone, address, passport="A1234567", dob="1990-01-01"):
         self.register_page.navigate_to_register_page()
@@ -50,17 +54,16 @@ class FlowBooking:
         self.login_page.login(email, password)
         self.search_page.navigate_to_search_page()
         self.search_page.enter_destination(destination)
-        self.search_page.click_search_button()
+        self.search_page.click_search()
         self.search_page.click_view_details()
         self.service_detail_page.click_book_now()
-        self.new_booking_page.enter_travel_date("2024-12-25")
+        self.new_booking_page.enter_travel_date("2025-12-25")
         self.new_booking_page.enter_num_travelers("1")
         self.new_booking_page.click_confirm_button()
         self.travelers_detail_page.enter_traveler_details(0, fullname, gender, dob, passport)
         self.travelers_detail_page.click_book_now()
-        
-        
-
+        self.payment_page.click_pay_now_button()
+        self.booking_history_page.assert_booking_contains_text(destination)
 
 @pytest.fixture
 def chrome_driver():
@@ -87,8 +90,9 @@ def test_e2e_flow_booking(chrome_driver):
     flow = FlowBooking(chrome_driver)
     # Example parameters - replace with real test values or parametrize
     flow.test_flow_booking(
-        email="dangbaohoang1368@gmail.com",
+        email="hdjhdbs3udg@eaut.edu.vn",
         password="TestPass123",
+        gender="male",
         destination="Tokyo",
         fullname="Test User",
         phone="0123456789",

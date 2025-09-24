@@ -24,16 +24,29 @@ class BookingHistoryPage:
         Raises AssertionError if not found.
         """
         expected_norm = expected_text.strip().lower()
-        # Prefer reading table rows if present
+
+        def row_has_text(driver):
+            try:
+                rows = driver.find_elements(By.CSS_SELECTOR, 'tbody tr')
+                for row in rows:
+                    if expected_norm in row.text.strip().lower():
+                        return True
+            except Exception:
+                # ignore and let fallback run below
+                pass
+            # fallback to booking entries (uses explicit wait internally)
+            try:
+                entries = self.get_booking_entries()
+                for e in entries:
+                    if expected_norm in e.strip().lower():
+                        return True
+            except Exception:
+                pass
+            return False
+
+        # Wait for the condition to be true or timeout
         try:
-            rows = self.driver.find_elements(By.CSS_SELECTOR, 'tbody tr')
-            for row in rows:
-                if expected_norm in row.text.strip().lower():
-                    return True
+            self.wait.until(lambda d: row_has_text(d))
+            return True
         except Exception:
-            # fallback to booking entries text
-            entries = self.get_booking_entries()
-            for e in entries:
-                if expected_norm in e.strip().lower():
-                    return True
-        raise AssertionError(f"No booking row contains expected text: {expected_text}")
+            raise AssertionError(f"No booking row contains expected text within timeout: {expected_text}")

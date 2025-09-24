@@ -8,6 +8,18 @@
     <form method="post">
         <label for="travel_date">Travel Date</label>
         <input type="date" id="travel_date" name="travel_date" required>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                try {
+                    var el = document.getElementById('travel_date');
+                    if (el && !el.value) {
+                        el.value = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+                    }
+                } catch (e) {
+                    // ignore in case of older browsers
+                }
+            });
+        </script>
         <label for="num_travelers">Number of Travelers</label>
         <input type="number" id="num_travelers" name="num_travelers" min="1" max="{{ service['max_travelers'] }}" required>
         <button type="submit">Proceed to Enter Details</button>

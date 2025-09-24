@@ -16,13 +16,34 @@ def login_required(f):
     return decorated_function
 
 def validate_travel_date(date_text):
+    # Accept a few common formats: YYYY-MM-DD, ISO datetime, MM/DD/YYYY
+    formats = [
+        '%Y-%m-%d',            # 2025-10-15
+        '%Y-%m-%dT%H:%M:%S',   # 2025-10-15T14:30:00
+        '%Y-%m-%d %H:%M:%S',   # 2025-10-15 14:30:00
+        '%m/%d/%Y',            # 10/15/2025
+    ]
+    last_err = None
+    for fmt in formats:
+        try:
+            travel_date = datetime.datetime.strptime(date_text, fmt).date()
+            if travel_date < datetime.date.today():
+                return False, "Travel date cannot be in the past."
+            return True, ""
+        except Exception as e:
+            last_err = e
+            continue
+
+    # As a final attempt, try parsing ISO format with fromisoformat (handles timezone-less ISO only)
     try:
-        travel_date = datetime.datetime.strptime(date_text, '%Y-%m-%d').date()
+        travel_date = datetime.date.fromisoformat(date_text)
         if travel_date < datetime.date.today():
             return False, "Travel date cannot be in the past."
         return True, ""
-    except ValueError:
-        return False, "Invalid date format. Use YYYY-MM-DD."
+    except Exception:
+        pass
+
+    return False, "Invalid date format. Use YYYY-MM-DD."
 
 def validate_number_of_travelers(num_text):
     try:
