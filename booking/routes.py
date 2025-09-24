@@ -72,11 +72,15 @@ def new_booking(service_id):
         is_valid, error_message = validate_travel_date(travel_date)
         if not is_valid:
             flash(error_message)
+            # Close connection before returning to avoid open handle
+            conn.close()
             return render_template('new.html', service=service)
         
         is_valid, error_message = validate_number_of_travelers(request.form['num_travelers'])
         if not is_valid:
             flash(error_message)
+            # Close connection before returning to avoid open handle
+            conn.close()
             return render_template('new.html', service=service)
 
 
