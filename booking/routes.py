@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from datetime import datetime
 
 
@@ -49,7 +48,6 @@ def update_booking_status(current_status, new_status):
         return "cancelled"
 
     return new_status
-=======
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from database import get_db_connection
@@ -213,4 +211,3 @@ def history():
                              WHERE b.customer_id = ? ORDER BY b.booking_date DESC""", (customer_id,)).fetchall()
     conn.close()
     return render_template('history.html', bookings=bookings)
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07

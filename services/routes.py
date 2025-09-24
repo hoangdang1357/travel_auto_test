@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Blueprint, jsonify, request
 
 services_bp = Blueprint("services", __name__)
@@ -33,7 +32,6 @@ def service_detail(service_id):
         if s["id"] == service_id:
             return jsonify(s), 200
     return jsonify({"error": "Service not found"}), 404
-=======
 
 from flask import Blueprint, render_template, request, flash
 from database import get_db_connection
@@ -80,4 +78,3 @@ def details(service_id):
     service = conn.execute('SELECT * FROM travel_services WHERE service_id = ?', (service_id,)).fetchone()
     conn.close()
     return render_template('details.html', service=service)
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07

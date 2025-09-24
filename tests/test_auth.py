@@ -1,19 +1,15 @@
-<<<<<<< HEAD
 import unittest
 import os
 import sys
 from auth.routes import signup, signin
-=======
 
 import unittest
 import os
 import sys
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07
 
 # Add the root directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-<<<<<<< HEAD
 class TestAuth(unittest.TestCase):
     def test_signup_success(self):
         success, msg = signup({"email": "test@example.com", "password": "123"})
@@ -44,7 +40,6 @@ class TestAuth(unittest.TestCase):
     def test_signin_not_registered(self):
         success, msg = signin({"email": "ghost@example.com", "password": "xxx"})
         self.assertFalse(success)
-=======
 from app import app
 from database import init_db, get_db_connection
 
@@ -99,4 +94,3 @@ class AuthTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Giả sử ta dùng dictionary giả lập database
@@ -31,7 +30,6 @@ def signin(data):
         return True, "Signin ok"
     else:
         return False, "wrong password"
-=======
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 import sqlite3
@@ -123,4 +121,3 @@ def logout():
     session.pop('customer_name', None)
     flash('You have been logged out.')
     return redirect(url_for('index'))
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07

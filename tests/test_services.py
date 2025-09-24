@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pytest
 from app import app
 
@@ -34,7 +33,6 @@ class TestServices:
     def test_service_not_found(self, client):
         res = client.get("/services/999")
         assert res.status_code == 404
-=======
 
 import unittest
 import os
@@ -84,4 +82,3 @@ class ServicesTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
->>>>>>> 1f58bd4957a6ed3a7d95c8be6cb16bb83b883c07
