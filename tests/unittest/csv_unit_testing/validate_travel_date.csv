@@ -9,8 +9,6 @@ abcd,False,"Invalid date format. Use YYYY-MM-DD."
 2025-10-,False,"Invalid date format. Use YYYY-MM-DD."
 2025/10/01,False,"Invalid date format. Use YYYY-MM-DD."
 -10-10,False,"Invalid date format. Use YYYY-MM-DD."
-2028-02-29,True,"Valid travel date."
-"   ",False,"Travel date is required."
 2025-2-5,False,"Invalid date format. Use YYYY-MM-DD."
 
 

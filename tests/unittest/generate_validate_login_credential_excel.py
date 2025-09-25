@@ -78,7 +78,7 @@ def make_workbook(rows):
 
         description = f"validate_login_credentials(email={email})"
         prior = 'N/A'
-        input_data = f"email={email}, password={'*' * len(password or '')}"
+        input_data = f"email={email}, password={password}"
         step = 'Call validate_login_credentials with DB/password mocks'
         expected_result = f"{expected_valid} => '{expected_message}'"
 
