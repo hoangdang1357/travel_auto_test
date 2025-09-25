@@ -130,13 +130,17 @@ def manage_bookings():
     conn.close()
     return render_template('bookings.html', bookings=bookings)
 
-@admin_bp.route('/update_booking_status/<int:booking_id>', methods=['POST'])
-@login_required
-def update_booking_status(booking_id):
-    status = request.form['status']
+def update_booking_status(booking_id, status):
     conn = get_db_connection()
     conn.execute('UPDATE bookings SET status = ? WHERE booking_id = ?', (status, booking_id))
     conn.commit()
     conn.close()
-    flash('Booking status updated successfully!')
+    return True
+
+@admin_bp.route('/update_booking_status/<int:booking_id>', methods=['POST'])
+@login_required
+def update_booking_status(booking_id):
+    status = request.form['status']
+    if update_booking_status(booking_id, status):
+        flash('Booking status updated successfully!')
     return redirect(url_for('admin.manage_bookings'))
