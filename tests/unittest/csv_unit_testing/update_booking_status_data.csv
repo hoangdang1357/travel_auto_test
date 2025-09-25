@@ -1,0 +1,8 @@
+booking_id,status,expected_result
+1,confirmed,True
+1,canceled,True
+2,pending,True
+2,confirmed,True
+99,canceled,False
+100,confirmed,False
+3,unknown,False

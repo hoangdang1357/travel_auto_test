@@ -130,17 +130,22 @@ def manage_bookings():
     conn.close()
     return render_template('bookings.html', bookings=bookings)
 
-def update_booking_status(booking_id, status):
+def update_booking_status_in_db(booking_id, status):
     conn = get_db_connection()
-    conn.execute('UPDATE bookings SET status = ? WHERE booking_id = ?', (status, booking_id))
+    cursor = conn.cursor()
+    cursor.execute('UPDATE bookings SET status = ? WHERE booking_id = ?', (status, booking_id))
     conn.commit()
+    updated = cursor.rowcount > 0
     conn.close()
-    return True
+    return updated
 
 @admin_bp.route('/update_booking_status/<int:booking_id>', methods=['POST'])
 @login_required
-def update_booking_status(booking_id):
+def update_booking_status_route(booking_id):
     status = request.form['status']
-    if update_booking_status(booking_id, status):
+    if update_booking_status_in_db(booking_id, status):
         flash('Booking status updated successfully!')
+    else:
+        flash('Booking status update failed.')
     return redirect(url_for('admin.manage_bookings'))
+
