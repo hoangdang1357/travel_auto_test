@@ -57,33 +57,40 @@ def verify_email(token):
     conn.close()
     return redirect(url_for('auth.signin'))
 
+def validate_login_credentials(email, password):
+    conn = get_db_connection()
+    customer = conn.execute('SELECT * FROM customers WHERE email = ?', (email,)).fetchone()
+    verified = customer['verified'] if customer else 0
+    conn.close()
+    
+    if not verified:
+        return False, 'Please verify your email before signing in.'
+
+    if customer and check_password_hash(customer['password_hash'], password):
+        return True, customer
+    else:
+        return False, 'Invalid email or password.'
 
 @auth_bp.route('/signin', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        
 
-        conn = get_db_connection()
-        customer = conn.execute('SELECT * FROM customers WHERE email = ?', (email,)).fetchone()
-        verified = customer['verified'] if customer else 0
-        
-        conn.close()
-        
-        if not verified:
-            flash('Please verify your email before signing in.')
-            return redirect(url_for('auth.signin'))
+        # Use the reusable function
+        is_valid, result = validate_login_credentials(email, password)
 
-        if customer and check_password_hash(customer['password_hash'], password):
+        if is_valid:
+            customer = result
             session['customer_id'] = customer['customer_id']
             session['customer_name'] = customer['full_name']
             flash('Signed in successfully!')
             return redirect(url_for('index'))
         else:
-            flash('Invalid email or password.')
+            flash(result)  # result contains the error message
 
     return render_template('signin.html')
+
 
 @auth_bp.route('/logout')
 def logout():
