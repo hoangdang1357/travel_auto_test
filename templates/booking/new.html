@@ -7,17 +7,13 @@
     <h2>Book {{ service['title'] }}</h2>
     <form method="post">
         <label for="travel_date">Travel Date</label>
-        <input type="date" id="travel_date" name="travel_date" required>
+        <input type="text" id="travel_date" name="travel_date" required>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                try {
-                    var el = document.getElementById('travel_date');
-                    if (el && !el.value) {
-                        el.value = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-                    }
-                } catch (e) {
-                    // ignore in case of older browsers
-                }
+            flatpickr("#travel_date", {
+                dateFormat: "Y-m-d", // force YYYY-MM-DD
+                defaultDate: "today"
             });
         </script>
         <label for="num_travelers">Number of Travelers</label>

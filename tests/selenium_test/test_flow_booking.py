@@ -57,7 +57,7 @@ class FlowBooking:
         self.search_page.click_search()
         self.search_page.click_view_details()
         self.service_detail_page.click_book_now()
-        self.new_booking_page.enter_travel_date("01-01-2026")
+        self.new_booking_page.enter_travel_date("2026-01-01")
         self.new_booking_page.enter_num_travelers("1")
         self.new_booking_page.click_confirm_button()
         self.travelers_detail_page.enter_traveler_details(0, fullname, gender, dob, passport)
