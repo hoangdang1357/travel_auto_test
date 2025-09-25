@@ -29,12 +29,10 @@ def test_search_hotel_flight(hotel, flight, expected):
         search_page = SearchPage(driver=driver)
         driver.implicitly_wait(10)
 
-        # perform search
         search_page.enter_hotel(hotel_name=hotel)
         search_page.enter_flight(flight_name=flight)
         search_page.click_search()
         driver.implicitly_wait(10)
         search_page.assert_service_present(expected_text=expected)
-        # assert results
     finally:
         driver.quit()
