@@ -49,7 +49,6 @@ class FlowBooking:
             # small implicit wait to allow redirect/flash
             self.driver.implicitly_wait(3)
         else:
-            # fallback to the Gmail flow (legacy) if DB lookup failed
             self.gmail_page.open_verification_link()
         self.login_page.login(email, password)
         self.search_page.navigate_to_search_page()
@@ -90,7 +89,7 @@ def test_e2e_flow_booking(chrome_driver):
     flow = FlowBooking(chrome_driver)
     # Example parameters - replace with real test values or parametrize
     flow.test_flow_booking(
-        email="hdjh6dds2ds332bs354udg@eaut.edu.vn",
+        email="202220747@eaut.edu.vn",
         password="TestPass123",
         gender="male",
         destination="Tokyo",

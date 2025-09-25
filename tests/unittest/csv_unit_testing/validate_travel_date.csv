@@ -1,1 +1,16 @@
-input_date, expected_valid, expected_message
+input_date,expected_valid,expected_message
+2025-10-01,True,"Valid travel date."
+,False,"Travel date is required."
+2020-01-01,False,"Travel date cannot be in the past."
+abcd,False,"Invalid date format. Use YYYY-MM-DD."
+2025-02-30,False,"Invalid date format. Use YYYY-MM-DD."
+2025-13-01,False,"Invalid date format. Use YYYY-MM-DD."
+2025--10,False,"Invalid date format. Use YYYY-MM-DD."
+2025-10-,False,"Invalid date format. Use YYYY-MM-DD."
+2025/10/01,False,"Invalid date format. Use YYYY-MM-DD."
+-10-10,False,"Invalid date format. Use YYYY-MM-DD."
+2028-02-29,True,"Valid travel date."
+"   ",False,"Travel date is required."
+2025-2-5,False,"Invalid date format. Use YYYY-MM-DD."
+
+

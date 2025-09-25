@@ -13,8 +13,9 @@ class NewBookingPage:
         
     def enter_travel_date(self, date):
         travel_date_element = self.wait.until(EC.element_to_be_clickable(self.travel_date))
+        self.driver.execute_script("arguments[0].removeAttribute('readonly')", travel_date_element)
         travel_date_element.clear()
-        travel_date_element.send_keys(date)
+        self.driver.execute_script("arguments[0].value = arguments[1]", travel_date_element, date)
         
     def enter_num_travelers(self, num):
         num_travelers_element = self.wait.until(EC.element_to_be_clickable(self.num_travelers))
