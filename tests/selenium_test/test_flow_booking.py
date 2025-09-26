@@ -47,7 +47,7 @@ class FlowBooking:
             # Visit the verification URL to mark email as verified
             self.driver.get(verification_url)
             # small implicit wait to allow redirect/flash
-            self.driver.implicitly_wait(3)
+            self.driver.implicitly_wait(10)
         else:
             self.gmail_page.open_verification_link()
         self.login_page.login(email, password)
@@ -89,7 +89,7 @@ def test_e2e_flow_booking(chrome_driver):
     flow = FlowBooking(chrome_driver)
     # Example parameters - replace with real test values or parametrize
     flow.test_flow_booking(
-        email="202220747@eaut.edu.vn",
+        email="khongphaihoang@eaut.edu.vn",
         password="TestPass123",
         gender="male",
         destination="Tokyo",

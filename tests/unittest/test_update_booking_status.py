@@ -24,7 +24,6 @@ def load_data_from_csv(filepath):
 
 @pytest.mark.parametrize("booking_id, status, expected_result", load_data_from_csv("tests\\unittest\\csv_unit_testing\\update_booking_status_data.csv"))
 def test_update_booking_status_in_db(booking_id, status, expected_result):
-    # fake bookings data
     bookings = {
         1: {"status": "pending"},
         2: {"status": "confirmed"},
