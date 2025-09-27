@@ -6,7 +6,8 @@ from pathlib import Path
 import sys
 
 # Ensure project root is on sys.path before importing routes.py
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+# (Now two levels up because file moved into component_test/)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
