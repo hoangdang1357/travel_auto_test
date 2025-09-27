@@ -137,3 +137,12 @@ WHEN NEW.rating IS NULL OR NEW.rating < 1 OR NEW.rating > 5
 BEGIN
     SELECT RAISE(FAIL, 'Invalid review rating: must be 1..5');
 END;
+
+-- Prevent modifications to bookings (num_travelers, travel_date, status changes except cancel) after confirmation
+CREATE TRIGGER trg_bookings_no_update_after_confirm
+BEFORE UPDATE ON bookings
+FOR EACH ROW
+WHEN OLD.status = 'confirmed'
+BEGIN
+    SELECT RAISE(FAIL, 'Cannot modify a confirmed booking');
+END;

@@ -64,6 +64,10 @@ def add_service():
         hotel = request.form['hotel']
         tour = request.form['tour']
 
+        if not title.strip():
+            flash('Title is required.')
+            return render_template('add_service.html')
+
         conn = get_db_connection()
         conn.execute("""INSERT INTO travel_services 
                      (title, description, destination, price, rating, start_date, end_date, max_travelers, flight, hotel, tour)
@@ -94,6 +98,10 @@ def edit_service(service_id):
         flight = request.form['flight']
         hotel = request.form['hotel']
         tour = request.form['tour']
+
+        if not title.strip():
+            flash('Title is required.')
+            return render_template('edit_service.html', service=service)
 
         conn.execute("""UPDATE travel_services SET
                      title = ?, description = ?, destination = ?, price = ?, rating = ?, 
