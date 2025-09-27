@@ -147,7 +147,7 @@ def update_booking_status_in_db(booking_id, status):
     conn.close()
     return updated
 
-@admin_bp.route('/update_booking_status/<int:booking_id>', methods=['POST'])
+@admin_bp.route('/update_booking_status/<int:booking_id>', methods=['POST'], endpoint='update_booking_status')
 @login_required
 def update_booking_status_route(booking_id):
     status = request.form['status']

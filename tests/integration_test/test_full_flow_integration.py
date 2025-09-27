@@ -5,7 +5,7 @@ import sqlite3
 import datetime
 import pytest
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -92,7 +92,6 @@ def seed_service():
 
 
 def test_full_flow_register_login_search_book_pay_history(client):
-    # 1) Register
     email = 'flow@example.com'
     resp = client.post(
         "/auth/signup",
@@ -107,7 +106,6 @@ def test_full_flow_register_login_search_book_pay_history(client):
     )
     assert resp.status_code in (302, 303)
 
-    # Fetch the verification token from DB and verify
     conn = database.get_db_connection()
     row = conn.execute(
         'SELECT verification_code, customer_id FROM customers WHERE email = ?', (email,)
@@ -120,7 +118,6 @@ def test_full_flow_register_login_search_book_pay_history(client):
     assert resp.status_code == 200
     assert b"Email verified successfully" in resp.data
 
-    # 2) Login
     resp = client.post(
         "/auth/signin",
         data={'email': email, 'password': 'Secret123'},
@@ -129,14 +126,11 @@ def test_full_flow_register_login_search_book_pay_history(client):
     assert resp.status_code == 200
     assert b"Signed in successfully" in resp.data
 
-    # 3) Seed a service and search
     service_id = seed_service()
     resp = client.get("/services/?destination=Tokyo")
     assert resp.status_code == 200
-    # Expect listing to include our service title
     assert b"A trip to Tokyo" in resp.data
 
-    # 4) Book: create booking
     future_date = (datetime.date.today() + datetime.timedelta(days=10)).strftime('%Y-%m-%d')
     resp = client.post(
         f"/booking/new/{service_id}",
@@ -147,7 +141,6 @@ def test_full_flow_register_login_search_book_pay_history(client):
     assert '/booking/traveler_details/' in resp.headers['Location']
     booking_id = int(resp.headers['Location'].rstrip('/').split('/')[-1])
 
-    # 5) Traveler details
     traveler_payload = {
         'full_name[]': ['Flow User'],
         'gender[]': ['male'],
@@ -162,7 +155,6 @@ def test_full_flow_register_login_search_book_pay_history(client):
     assert resp.status_code in (302, 303)
     assert f"/booking/payment/{booking_id}" in resp.headers['Location']
 
-    # 6) Pay
     resp = client.post(
         f"/booking/payment/{booking_id}",
         data={'payment_method': 'credit_card'},
@@ -171,7 +163,6 @@ def test_full_flow_register_login_search_book_pay_history(client):
     assert resp.status_code in (302, 303)
     assert "/booking/history" in resp.headers['Location']
 
-    # 7) View history
     resp = client.get("/booking/history")
     assert resp.status_code == 200
     assert b"A trip to Tokyo" in resp.data

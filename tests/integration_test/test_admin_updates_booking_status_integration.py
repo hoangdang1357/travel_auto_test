@@ -4,14 +4,8 @@ import tempfile
 import sqlite3
 import pytest
 
-# There are 2 test cases in test_admin_updates_booking_status.py:
-
-# test_admin_can_update_booking_status — logs in as admin and updates a booking to canceled; asserts DB status changes.
-# test_admin_confirms_booking_reflected_in_history — updates a booking to confirmed 
-# and verifies the customer’s /booking/history shows 
-# “confirmed”.
-
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# Adjust project root: now two levels up from integration_test
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
@@ -67,7 +61,6 @@ def client():
 
 
 def seed_admin_user():
-    # username: admin, password: admin
     from werkzeug.security import generate_password_hash
     conn = database.get_db_connection()
     conn.execute(
@@ -87,7 +80,6 @@ def seed_admin_user():
 
 def seed_customer_and_service_and_booking():
     conn = database.get_db_connection()
-    # customer
     cur = conn.execute(
         """
         INSERT INTO customers (full_name, email, password_hash, phone, address, verified)
@@ -102,7 +94,6 @@ def seed_customer_and_service_and_booking():
         ),
     )
     customer_id = cur.lastrowid
-    # service
     cur = conn.execute(
         """
         INSERT INTO travel_services (price, rating, destination, flight, hotel, tour, max_travelers, title, description, start_date, end_date)
@@ -123,7 +114,6 @@ def seed_customer_and_service_and_booking():
         ),
     )
     service_id = cur.lastrowid
-    # booking (pending)
     cur = conn.execute(
         """
         INSERT INTO bookings (customer_id, service_id, travel_date, num_travelers, total_amount)
@@ -147,7 +137,6 @@ def test_admin_can_update_booking_status(client):
     seed_admin_user()
     booking_id = seed_customer_and_service_and_booking()
 
-    # Admin login
     resp = client.post(
         "/admin/login",
         data={"username": "admin", "password": "admin"},
@@ -156,12 +145,10 @@ def test_admin_can_update_booking_status(client):
     assert resp.status_code == 200
     assert b"Logged in successfully" in resp.data
 
-    # View bookings page
     resp = client.get("/admin/bookings")
     assert resp.status_code == 200
     assert str(booking_id).encode() in resp.data
 
-    # Update status to 'canceled'
     resp = client.post(
         f"/admin/update_booking_status/{booking_id}",
         data={"status": "canceled"},
@@ -170,7 +157,6 @@ def test_admin_can_update_booking_status(client):
     assert resp.status_code == 200
     assert b"Booking status updated successfully" in resp.data
 
-    # Verify in DB
     conn = database.get_db_connection()
     row = conn.execute("SELECT status FROM bookings WHERE booking_id = ?", (booking_id,)).fetchone()
     conn.close()
@@ -182,7 +168,6 @@ def test_admin_confirms_booking_reflected_in_history(client):
     seed_admin_user()
     booking_id = seed_customer_and_service_and_booking()
 
-    # Admin login
     resp = client.post(
         "/admin/login",
         data={"username": "admin", "password": "admin"},
@@ -190,7 +175,6 @@ def test_admin_confirms_booking_reflected_in_history(client):
     )
     assert resp.status_code == 200
 
-    # Update status to 'confirmed'
     resp = client.post(
         f"/admin/update_booking_status/{booking_id}",
         data={"status": "confirmed"},
@@ -198,8 +182,6 @@ def test_admin_confirms_booking_reflected_in_history(client):
     )
     assert resp.status_code == 200
 
-    # Simulate customer session and load history
-    # Get the customer_id for this booking
     conn = database.get_db_connection()
     row = conn.execute("SELECT customer_id FROM bookings WHERE booking_id = ?", (booking_id,)).fetchone()
     customer_id = row[0]
@@ -210,5 +192,4 @@ def test_admin_confirms_booking_reflected_in_history(client):
 
     resp = client.get("/booking/history")
     assert resp.status_code == 200
-    # Confirmed should appear in the history table
     assert b"confirmed" in resp.data
