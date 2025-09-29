@@ -17,7 +17,9 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import tempfile
 import shutil
+import random
 
+random_int = random.randint(1000, 9999)
 options = webdriver.ChromeOptions()
 # keep the options minimal here; the fixture will create a temp profile
 options.add_argument("--no-sandbox")
@@ -48,8 +50,8 @@ class FlowBooking:
             self.driver.get(verification_url)
             # small implicit wait to allow redirect/flash
             self.driver.implicitly_wait(10)
-        else:
-            self.gmail_page.open_verification_link()
+        # else:
+        #     self.gmail_page.open_verification_link()
         self.login_page.login(email, password)
         self.search_page.navigate_to_search_page()
         self.search_page.enter_destination(destination)
@@ -89,7 +91,7 @@ def test_e2e_flow_booking(chrome_driver):
     flow = FlowBooking(chrome_driver)
     # Example parameters - replace with real test values or parametrize
     flow.test_flow_booking(
-        email="khongphaihoang@eaut.edu.vn",
+        email=f"khongphaihoang{random_int}@eaut.edu.vn",
         password="TestPass123",
         gender="male",
         destination="Tokyo",
